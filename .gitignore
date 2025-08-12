@@ -1,0 +1,42 @@
+
+.env
+
+/src/generated/prisma
+.DS_Store
+/http
+
+# 의존성 디렉토리
+node_modules/
+
+# 로그 파일
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 임시 파일
+.DS_Store # Mac OS에서 생성하는 디렉토리 서비스 파일
+*.tmp
+*.bak
+*.swp # Vim 스왑 파일
+
+# 환경 설정 파일 (보안 또는 로컬 설정)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 빌드 관련 파일 (Webpack, Babel 등)
+dist/
+build/
+coverage/
+
+# IDE 관련 파일 (VS Code)
+.vscode/
+
+# 문서 폴더 (Docs)
+docs/
+
+# 기타
+npm-shrinkwrap.json
