@@ -8,8 +8,8 @@ const controller = new CurationController();
 
 router.post("/:styleId/curations", curationController.createCuration);
 router.get("/:styleId/curations", curationController.getCurations);
-router.put("/:styleId/curations/:curationId", curationController.put..);
-router.delete("/:styleId/curations/:curationId", curationController.delete...);
+router.put("/curations/:curationId", curationController.putCuration);
+router.delete("/curations/:curationId", curationController.deleteCuration);
               
     
 export default router;
