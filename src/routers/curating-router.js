@@ -11,6 +11,7 @@ const controller = new CurationController();
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 router.post("/:styleId/curations", curationController.createCuration);
 router.get("/:styleId/curations", curationController.getCurations);
 router.put("/curations/:curationId", curationController.putCuration);
@@ -37,10 +38,18 @@ router.delete("/curations/:curationId", // 경로 재설정);
 >>>>>>> b41f66e (1)
 =======
 >>>>>>> 847a58d (Feature/lsj (#2))
+=======
+>>>>>>> 5596d72 (khy edit)
 router.post("/styles/:styleId/curations", curationController.postCurations);
 router.get("/styles/:styleId/curations", curationController.getCurations);
 router.put("/curations/:curationId",curationController.putCurations)     // 경로 재설정);
 router.delete("/curations/:curationId",curationController.deleteCurations) // 경로 재설정);
+=======
+router.post("/:styleId/curations", curationController.createCuration);
+router.get("/:styleId/curations", curationController.getCurations);
+router.put("/curations/:curationId", curationController.putCuration);
+router.delete("/curations/:curationId", curationController.deleteCuration);
+>>>>>>> 47ae24d (khy edit)
               
 <<<<<<< HEAD
 <<<<<<< HEAD
