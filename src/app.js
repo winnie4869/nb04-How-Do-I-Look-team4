@@ -73,10 +73,15 @@ app.all(/(.*)/, (req, res) => {
 // });
 
 
-// 서버 실행
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+
+// // 애플리케이션 종료 시 Prisma 클라이언트 연결 해제
+// process.on('beforeExit', async () => {
+//   console.log('Server is shutting down. Disconnecting from database...');
+//   await prisma.$disconnect();
+// });
+
+// app.use(errorHandler);
+
 
 // 애플리케이션 종료 시 Prisma 클라이언트 연결 해제
 process.on('beforeExit', async () => {
