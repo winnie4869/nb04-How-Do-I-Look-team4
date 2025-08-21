@@ -5,13 +5,21 @@ import { CurationService } from "../services/curating-service.js";
 >>>>>>> 5f659fc (Feature/khy (#9))
 import { CurationService } from "../services/curating-service.js";
 
+<<<<<<< HEAD
 //객체 지향으로 만들어라는 요구사항 때문에 만들
+=======
+//객체 지향으로 만들어라는 요구사항 때문에 만들었는데 일단 . 만들었다 
+>>>>>>> 8e816fa (first commit)
 export class CurationController {
   constructor() {
     this.curationService = new CurationService();
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 58987fe (first commit)
   // 큐레이션 등록 (POST) + 등록시 입력 오류 + 비번 암호화 포함
 createCuration = async (req, res, next) => {
     try { 
@@ -28,6 +36,7 @@ createCuration = async (req, res, next) => {
             return res.json({ message: "*20자 이내로 입력해 주세요"});
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
         // 패스워드 암호화 부분 
 =======
         // 패스워드 암호화 부분 (bcrypt 라이브러리 사용)
@@ -35,6 +44,13 @@ createCuration = async (req, res, next) => {
         const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$/;
         if(!passwordRegex.test(password)) {
             return res.json({ message: "*영문, 숫자 조합 8~16자리로 입력해주세요"});
+=======
+        // 패스워드 암호화 부분 (bcrypt 라이브러리 사용)
+        const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$/;
+        if(!passwordRegex.test(password)) {
+            return res.json({ message: "*영문, 숫자 조합 8~16자리로 입력해주세요"});
+            // console.log('조건에 맞춰서 작성하라');
+>>>>>>> 58987fe (first commit)
         }
         
         const newCuration = await this.curationService.createCuration({
@@ -44,15 +60,23 @@ createCuration = async (req, res, next) => {
             content,
             ...rating
         });
+<<<<<<< HEAD
         const { password: _, ...curationResponse } = newCuration; // 클라이언트로 응답 시에 패스워드 필드는 제외하기 위해서 구조 분해 씀
+=======
+        const { password: _, ...curationResponse } = newCuration; // 클라이언트로 응답 시에 패스워드 필드는 제외하기 위해서 구조 분해 썻ㄷ.
+>>>>>>> 58987fe (first commit)
         res.status(201).json(newCuration);
     } catch (error) {
         next(error);
     }
 };
 
+<<<<<<< HEAD
 =======
 >>>>>>> 50eaefa (edit controller (#10))
+=======
+>>>>>>> 8e816fa (first commit)
+>>>>>>> 58987fe (first commit)
   // 큐레이션 목록 조회 (GET)
   getCurations = async (req, res, next) => {
 <<<<<<< HEAD
@@ -72,6 +96,7 @@ createCuration = async (req, res, next) => {
         keyword
       );
 
+<<<<<<< HEAD
        // 결과가 없을 때도 통일된 구조로 응답
       res.status(200).json({
         status: 200,
@@ -208,6 +233,7 @@ import { getCuration, postCuration, putCuration, deleteCuration, searchCurations
 <<<<<<< HEAD
 <<<<<<< HEAD
 }
+<<<<<<< HEAD
 
   async searchCurations(req, res, next) {
    try {
@@ -231,3 +257,13 @@ import { getCuration, postCuration, putCuration, deleteCuration, searchCurations
 }
 }
 >>>>>>> 50eaefa (edit controller (#10))
+=======
+=======
+      res.status(200).json(results);
+    } catch (error) {
+      next(error); 
+    }
+  };
+>>>>>>> 8e816fa (first commit)
+}
+>>>>>>> 58987fe (first commit)
