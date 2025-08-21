@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
+import curationRouter from './router/curating-router.js';
+import { errorHandler } from "./middilewares/errorHandler.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -9,6 +11,10 @@ app.use(express.json());
 app.use(cors({
     origin: "*"
 }));
+
+app.use('/styles', curationRouter); 
+app.use(errorHandler);
+
 
 app.get("/", (req, res) => {
     res.send("서버 정상");
@@ -30,4 +36,5 @@ process.on('beforeExit', async () => {
   console.log('Server is shutting down. Disconnecting from database...');
   await prisma.$disconnect();
 });
+
 
