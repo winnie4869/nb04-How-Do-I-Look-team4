@@ -1,10 +1,19 @@
 
-.env
+ex.js
 
 /src/generated/prisma
 .DS_Store
 /http
 
+/src/ex.js
+/src/routers/comments-router.js
+/src/routers/curating-routers.js
+/src/routers/images-router.js
+/src/routers/ranking-router.js
+/src/routers/tags-router.js
+/src/routers/styles-router.js
+/src/services/ranking-service.js
+/src/controllers/ranking-controller.js
 # 의존성 디렉토리
 node_modules/
 

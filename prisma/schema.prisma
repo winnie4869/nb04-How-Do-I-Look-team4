@@ -1,111 +1,84 @@
-// how-do-i-look/prisma/schema.prisma
-
-// Prisma 스키마는 데이터베이스 모델과 관계를 정의합니다.
-// 이 스키마는 `npx prisma migrate dev` 명령어를 통해 실제 데이터베이스에 반영됩니다.
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql" // PostgreSQL을 사용하도록 가정합니다.
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-// =========================================================================
-// Models
-// =========================================================================
-
-// 스타일 게시글 모델
-// 'POST /styles', 'GET /styles/{styleId}' 등의 API 응답에 있는 필드와 직접 매핑됩니다.
 model Style {
-  id            Int            @id @default(autoincrement())
-  thumbnail     String         // 'GET /styles' 응답의 `thumbnail` 필드
+  id            Int        @id @default(autoincrement())
+  thumbnail     String
   title         String
   content       String
   nickname      String
-  password      String         // 암호화된 비밀번호를 저장합니다.
-  viewCount     Int            @default(0) // 조회수
-  curationCount Int            @default(0) // 큐레이팅 수
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  
-  // 관계 정의
-  images        Image[]        // 1:N 관계: 하나의 스타일은 여러 상세 이미지를 가집니다. API의 `imageUrls` 배열에 해당합니다.
-  tags          StyleTag[]     // N:N 관계: 하나의 스타일은 여러 태그를 가질 수 있습니다. API의 `tags` 배열에 해당합니다.
-  curations     Curation[]     // 1:N 관계: 하나의 스타일에 여러 큐레이션이 달립니다.
-  categories    Category[]     // 1:N 관계: 하나의 스타일은 여러 카테고리(옷, 신발 등) 정보를 가집니다. API의 `categories` 객체에 해당합니다.
+  password      String
+  viewCount     Int        @default(0)
+  curationCount Int        @default(0)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  categories    Category[]
+  curations     Curation[]
+  images        Image[]
+  tags          StyleTag[]
 }
 
-// 스타일 상세 이미지 모델
-// `Style`과 1:N 관계를 가집니다. `imageUrls` 배열을 구조화합니다.
 model Image {
   id      Int    @id @default(autoincrement())
-  url     String // 이미지 URL
-  styleId Int    // Style 모델의 외래 키
-  style   Style  @relation(fields: [styleId], references: [id], onDelete: Cascade) // Style이 삭제되면 이미지도 함께 삭제됩니다.
+  url     String
+  styleId Int
+  style   Style  @relation(fields: [styleId], references: [id], onDelete: Cascade)
 }
 
-// 카테고리 모델
-// `Style`과 1:N 관계를 가집니다. API의 `categories` 객체를 구조화하여 검색 및 집계가 용이하도록 합니다.
 model Category {
-  id        Int      @id @default(autoincrement())
-  key       String   // 'top', 'bottom' 등 카테고리 키
-  name      String   // 아이템 이름
-  brand     String   // 브랜드 이름
-  price     Int      // 가격
-  styleId   Int      // Style 모델의 외래 키
-  style     Style    @relation(fields: [styleId], references: [id], onDelete: Cascade)
+  id      Int    @id @default(autoincrement())
+  key     String
+  name    String
+  brand   String
+  price   Int
+  styleId Int
+  style   Style  @relation(fields: [styleId], references: [id], onDelete: Cascade)
 }
 
-// 태그 모델
-// 모든 고유한 태그를 저장합니다.
 model Tag {
-  id        Int        @id @default(autoincrement())
-  name      String     @unique // 중복 태그 방지를 위한 unique 속성
-  styles    StyleTag[]
+  id     Int        @id @default(autoincrement())
+  name   String     @unique
+  styles StyleTag[]
 }
 
-// Style과 Tag의 N:N 관계를 위한 중간 테이블
-// API의 `tags` 배열을 관계형 데이터베이스에 효율적으로 저장하기 위한 설계입니다.
 model StyleTag {
   styleId Int
   tagId   Int
   style   Style @relation(fields: [styleId], references: [id], onDelete: Cascade)
   tag     Tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
-  
-  @@id([styleId, tagId]) // 복합 키(Composite Key) 설정
+
+  @@id([styleId, tagId])
 }
 
-// 큐레이션 모델
-// 스타일 게시글에 대한 평가 정보를 담습니다.
 model Curation {
   id                Int      @id @default(autoincrement())
   nickname          String
-  password          String   // 암호화된 비밀번호
+  password          String
   content           String
-  trendy            Int      // 트렌디 점수
-  personality       Int      // 개성 점수
-  practicality      Int      // 실용성 점수
-  costEffectiveness Int      // 가성비 점수
+  trendy            Int
+  personality       Int
+  practicality      Int
+  costEffectiveness Int
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
-  
-  styleId           Int      // Style 모델의 외래 키
+  styleId           Int
+  comment           Comment?
   style             Style    @relation(fields: [styleId], references: [id], onDelete: Cascade)
-  comment           Comment? // 1:1 관계: 하나의 큐레이션에는 하나의 답글이 달릴 수 있습니다.
 }
 
-// 답글(댓글) 모델
-// 큐레이션에 대한 답글 정보를 담습니다.
 model Comment {
   id         Int      @id @default(autoincrement())
   nickname   String
-  password   String   // 암호화된 비밀번호
+  // password   String
   content    String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-
-  curationId Int      @unique // 1:1 관계를 위한 unique 키
+  curationId Int      @unique
   curation   Curation @relation(fields: [curationId], references: [id], onDelete: Cascade)
 }
