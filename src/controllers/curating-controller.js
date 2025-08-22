@@ -25,7 +25,6 @@ createCuration = async (req, res, next) => {
         const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$/;
         if(!passwordRegex.test(password)) {
             return res.json({ message: "*영문, 숫자 조합 8~16자리로 입력해주세요"});
-            // console.log('조건에 맞춰서 작성하라');
         }
         
         const newCuration = await this.curationService.createCuration({
@@ -56,9 +55,18 @@ createCuration = async (req, res, next) => {
         keyword
       );
 
+       if (!results) {
+        return res.status(200).json({
+          currentPage: parseInt(page) || 1,
+          totalPages: 0,
+          totalItemCount: 0,
+          data: [],
+        });
+      }
+
       res.status(200).json(results);
     } catch (error) {
       next(error); 
     }
-  };
+  }
 }

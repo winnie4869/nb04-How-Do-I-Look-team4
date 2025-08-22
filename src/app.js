@@ -1,18 +1,37 @@
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
-import curationRouter from './router/curating-router.js';
+import curationRouter from './routers/curating-router.js';
 import { errorHandler } from "./middilewares/errorHandler.js";
+import path from "path"; 
+import { fileURLToPath } from "url"; 
+
+import styleRouter from "./routers/style-router.js";
+import rankingRouter from "./routers/ranking-router.js";
+import commentRouter from "./routers/comment-router.js";
+import tagRouter from "./routers/tag-router.js";
+import imageRouter from "./routers/image-router.js";
+
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 app.use(express.json());
 app.use(cors({
     origin: "*"
 }));
 
+app.use(process.env.STATIC_FILE_PATH || '/files', express.static(path.join(__dirname, 'uploads')));
+
 app.use('/styles', curationRouter); 
+app.use("/", styleRouter);
+app.use("/", rankingRouter);
+app.use("/", commentRouter);
+app.use("/", tagRouter);
+app.use("/", imageRouter);
 app.use(errorHandler);
 
 
