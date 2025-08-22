@@ -71,58 +71,5 @@ createCuration = async (req, res, next) => {
     } catch (error) {
       next(error); 
     }
-  }
-}
-
-// export class CurationController {
-
-  async putCurations(req, res, next) {
-    try {
-      const curationId = parseInt(req.params.curationId,10);
-      const { password, nickname, content, trendy, personality, practicality, costEffectiveness } = req.body;
-
-     const updatedCuration = await putCuration(curationId, {
-      password,
-      nickname,
-      content,
-      trendy,
-      personality,
-      practicality,
-      costEffectiveness
-    });
-
-    res.status(200).json({
-      data: {
-        id: updatedCuration.id,
-        nickname: updatedCuration.nickname,
-        content: updatedCuration.content,
-        trendy: updatedCuration.trendy,
-        personality: updatedCuration.personality,
-        practicality: updatedCuration.practicality,
-        costEffectiveness: updatedCuration.costEffectiveness,
-        createdAt: updatedCuration.createdAt,
-        comment: updatedCuration.comment || null  
-      }
-    });
-
-  }  catch (error) {
-      next (error);
-  }
-};
-
-  async deleteCurations(req, res, next) {
-    try {
-     const curationId = parseInt(req.params.curationId, 10);
-     const { password } = req.body;
-
-      const deletedCuration = await deleteCuration(curationId, password);
-
-     res.status(200).json({
-       message: "큐레이팅 삭제 성공",
-       data: deletedCuration
-    });
-
-  }  catch (error) {
-      next (error)
   };
 }

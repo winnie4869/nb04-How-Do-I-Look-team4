@@ -27,6 +27,10 @@ app.use(cors({
     origin: "*"
 }));
 
+app.use('/styles', curationRouter); 
+app.use(errorHandler);
+
+
 app.get("/", (req, res) => {
     res.send("서버 정상");
 });
