@@ -7,6 +7,7 @@ const curationController = new CurationController();
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 router.post("/:styleId/curations", curationController.createCuration);
 router.get("/:styleId/curations", curationController.getCurations);
 router.put("/curations/:curationId", curationController.putCuration);
@@ -29,10 +30,24 @@ router.delete("/curations/:curationId", // 경로 재설정);
     
 >>>>>>> 5f659fc (Feature/khy (#9))
 =======
+=======
+>>>>>>> b41f66e (1)
 router.post("/styles/:styleId/curations", curationController.postCurations);
 router.get("/styles/:styleId/curations", curationController.getCurations);
 router.put("/curations/:curationId",curationController.putCurations)     // 경로 재설정);
 router.delete("/curations/:curationId",curationController.deleteCurations) // 경로 재설정);
               
+<<<<<<< HEAD
 >>>>>>> 50eaefa (edit controller (#10))
 export default router;
+=======
+export default router;
+=======
+router.post("/:styleId/curations", curationController.createCuration);
+
+router.get("/:styleId/curations", curationController.getCurations);
+
+export default router;
+
+>>>>>>> 6b1b4de (1)
+>>>>>>> b41f66e (1)

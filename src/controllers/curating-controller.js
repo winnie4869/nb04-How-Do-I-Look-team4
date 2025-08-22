@@ -49,8 +49,11 @@ createCuration = async (req, res, next) => {
         const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$/;
         if(!passwordRegex.test(password)) {
             return res.json({ message: "*영문, 숫자 조합 8~16자리로 입력해주세요"});
+<<<<<<< HEAD
             // console.log('조건에 맞춰서 작성하라');
 >>>>>>> 58987fe (first commit)
+=======
+>>>>>>> b41f66e (1)
         }
         
         const newCuration = await this.curationService.createCuration({
@@ -97,15 +100,21 @@ createCuration = async (req, res, next) => {
       );
 
 <<<<<<< HEAD
+<<<<<<< HEAD
        // 결과가 없을 때도 통일된 구조로 응답
       res.status(200).json({
         status: 200,
         message: "큐레이션 조회 성공",
         data: results || {
+=======
+       if (!results) {
+        return res.status(200).json({
+>>>>>>> 6b1b4de (1)
           currentPage: parseInt(page) || 1,
           totalPages: 0,
           totalItemCount: 0,
           data: [],
+<<<<<<< HEAD
         }
       });
     } catch (error) {
@@ -259,11 +268,24 @@ import { getCuration, postCuration, putCuration, deleteCuration, searchCurations
 >>>>>>> 50eaefa (edit controller (#10))
 =======
 =======
+=======
+        });
+      }
+
+>>>>>>> 6b1b4de (1)
       res.status(200).json(results);
     } catch (error) {
       next(error); 
     }
+<<<<<<< HEAD
   };
 >>>>>>> 8e816fa (first commit)
+<<<<<<< HEAD
 }
 >>>>>>> 58987fe (first commit)
+=======
+=======
+  }
+>>>>>>> 6b1b4de (1)
+}
+>>>>>>> b41f66e (1)

@@ -268,41 +268,58 @@ export class CurationService {
 
     // 큐레이팅 목록 조회하기 
     async getCurations(styleId, page, pageSize, searchBy, keyword) {
-        const searchContent = {};
-        if (searchBy && keyword) {
-            if (searchBy === "nickname" || searchBy === "content") {
-                searchContent[searchBy] = {
-                    contains: keyword,
-                };
+        try {
+            const searchContent = {};
+            if (searchBy && keyword) {
+                if (searchBy === "nickname" || searchBy === "content") {
+                    searchContent[searchBy] = {
+                        contains: keyword,
+                    };
+                }
             }
+
+            const [totalItems, curations] = await prisma.$transaction([
+                prisma.curation.count({
+                    where: { styleId, ...searchContent },
+                }),
+                prisma.curation.findMany({
+                    where: { styleId, ...searchContent },
+                    skip: (page - 1) * pageSize,
+                    take: pageSize,
+                    include: {
+                        comment: true, // 큐레이션과 연결된 모든 댓글 데이터까지 가져올 수 잇음
+                    },
+                    orderBy: {
+                        createdAt: "desc",
+                    },
+                }),
+            ]);
+            console.log(curations);
+            const totalPages = Math.ceil(totalItems / pageSize);
+
+            return {
+                currentPage: page,
+                totalPages,
+                totalItemCount: totalItems,
+                data: curations,
+            };
+        } catch (error) {
+            console.log("Error fetching curations:", error);
+            return {
+                currentPage: 1,
+                totalPages: 0,
+                totalItemCount: 0,
+                data: [],
+            };
         }
-
-        const [totalItems, curations] = await prisma.$transaction([
-            prisma.curation.count({
-                where: { styleId, ...searchContent},
-            }),
-            prisma.curation.findMany({
-                where: { styleId, ...searchContent },
-                skip: (page - 1) * pageSize,
-                take: pageSize,
-                include: {
-                comment: true, // 큐레이션과 연결된 모든 댓글 데이터까지 가져올 수 잇음
-                },
-                orderBy: {
-                    createdAt: "desc",
-                },
-            }),
-        ]);
-
-        const totalPages = Math.ceil(totalItems / pageSize);
-
-        return {
-            currentPage: page,
-            totalPages,
-            totalItemCount: totalItems,
-            data: curations,
-        };
     }
+<<<<<<< HEAD
 }
 >>>>>>> 8e816fa (first commit)
+<<<<<<< HEAD
 >>>>>>> 58987fe (first commit)
+=======
+=======
+}
+>>>>>>> 6b1b4de (1)
+>>>>>>> b41f66e (1)
