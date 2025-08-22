@@ -4,12 +4,17 @@ import { CurationService } from "../services/curating-service.js";
 =======
 >>>>>>> 5f659fc (Feature/khy (#9))
 import { CurationService } from "../services/curating-service.js";
+import { CurationService } from "../services/curating-service.js";
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 //객체 지향으로 만들어라는 요구사항 때문에 만들
 =======
 //객체 지향으로 만들어라는 요구사항 때문에 만들었는데 일단 . 만들었다 
 >>>>>>> 8e816fa (first commit)
+=======
+//객체 지향으로 만들어라는 요구사항 때문에 만들
+>>>>>>> fa487cd (Feature/khy (#9))
 export class CurationController {
   constructor() {
     this.curationService = new CurationService();
@@ -64,10 +69,14 @@ createCuration = async (req, res, next) => {
             ...rating
         });
 <<<<<<< HEAD
+<<<<<<< HEAD
         const { password: _, ...curationResponse } = newCuration; // 클라이언트로 응답 시에 패스워드 필드는 제외하기 위해서 구조 분해 씀
 =======
         const { password: _, ...curationResponse } = newCuration; // 클라이언트로 응답 시에 패스워드 필드는 제외하기 위해서 구조 분해 썻ㄷ.
 >>>>>>> 58987fe (first commit)
+=======
+        const { password: _, ...curationResponse } = newCuration; // 클라이언트로 응답 시에 패스워드 필드는 제외하기 위해서 구조 분해 씀
+>>>>>>> f5acbc3 (Feature/khy (#9))
         res.status(201).json(newCuration);
     } catch (error) {
         next(error);
@@ -83,10 +92,15 @@ createCuration = async (req, res, next) => {
   // 큐레이션 목록 조회 (GET)
   getCurations = async (req, res, next) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
   // 큐레이션 목록 조회 (GET)
   getCurations = async (req, res, next) => {
 =======
 >>>>>>> 5f659fc (Feature/khy (#9))
+=======
+  // 큐레이션 목록 조회 (GET)
+  getCurations = async (req, res, next) => {
+>>>>>>> f5acbc3 (Feature/khy (#9))
     try {
       const { styleId } = req.params;
       const { page, pageSize, searchBy, keyword } = req.query;
@@ -128,10 +142,13 @@ import { getCuration, postCuration, putCuration, deleteCuration, searchCurations
 =======
   }
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 >>>>>>> 5f659fc (Feature/khy (#9))
 =======
 >>>>>>> 50eaefa (edit controller (#10))
+=======
+>>>>>>> f5acbc3 (Feature/khy (#9))
 
   // 큐레이션 등록 (POST)
   postCurations = async (req, res, next) => {
@@ -176,10 +193,18 @@ import { getCuration, postCuration, putCuration, deleteCuration, searchCurations
 
   // 큐레이션 수정 (PUT)
   putCurations = async (req, res, next) => {
+=======
+}
+
+export class CurationController {
+
+  async putCurations(req, res, next) {
+>>>>>>> fa487cd (Feature/khy (#9))
     try {
       const curationId = parseInt(req.params.curationId,10);
       const { password, nickname, content, trendy, personality, practicality, costEffectiveness } = req.body;
 
+<<<<<<< HEAD
       // 등록시 입력 오류 부분 
       if (!nickname || !content || !password) { //! 이 부분은 느낌표 뒤에 오는 값이 falsy이면 true로 실행이 되면서 falsy값을 모두 잡아줌. 그래서 null할당 x
         return res.status(400).json({ message: "필수 입력사항입니다" });
@@ -211,11 +236,38 @@ import { getCuration, postCuration, putCuration, deleteCuration, searchCurations
       message: "큐레이션 수정 성공",
       data: curationResponse
     })
+=======
+     const updatedCuration = await putCuration(curationId, {
+      password,
+      nickname,
+      content,
+      trendy,
+      personality,
+      practicality,
+      costEffectiveness
+    });
+
+    res.status(200).json({
+      data: {
+        id: updatedCuration.id,
+        nickname: updatedCuration.nickname,
+        content: updatedCuration.content,
+        trendy: updatedCuration.trendy,
+        personality: updatedCuration.personality,
+        practicality: updatedCuration.practicality,
+        costEffectiveness: updatedCuration.costEffectiveness,
+        createdAt: updatedCuration.createdAt,
+        comment: updatedCuration.comment || null  
+      }
+    });
+
+>>>>>>> fa487cd (Feature/khy (#9))
   }  catch (error) {
       next (error);
   }
 };
 
+<<<<<<< HEAD
   // 큐레이션 삭제 (DELETE)
   deleteCurations = async (req, res, next) => {
     try {
@@ -287,5 +339,26 @@ import { getCuration, postCuration, putCuration, deleteCuration, searchCurations
 =======
   }
 >>>>>>> 6b1b4de (1)
+<<<<<<< HEAD
 }
 >>>>>>> b41f66e (1)
+=======
+=======
+  async deleteCurations(req, res, next) {
+    try {
+     const curationId = parseInt(req.params.curationId, 10);
+     const { password } = req.body;
+
+      const deletedCuration = await deleteCuration(curationId, password);
+
+     res.status(200).json({
+       message: "큐레이팅 삭제 성공",
+       data: deletedCuration
+    });
+
+  }  catch (error) {
+      next (error)
+  };
+>>>>>>> fa487cd (Feature/khy (#9))
+}
+>>>>>>> f5acbc3 (Feature/khy (#9))
