@@ -6,11 +6,11 @@ import { errorHandler } from "./middilewares/errorHandler.js";
 import path from "path"; 
 import { fileURLToPath } from "url"; 
 
-import styleRouter from "./routers/style-router.js";
-import rankingRouter from "./routers/ranking-router.js";
-import commentRouter from "./routers/comment-router.js";
-import tagRouter from "./routers/tag-router.js";
-import imageRouter from "./routers/image-router.js";
+// import styleRouter from "./routers/style-router.js";
+// import rankingRouter from "./routers/ranking-router.js";
+// import commentRouter from "./routers/comment-router.js";
+// import tagRouter from "./routers/tag-router.js";
+// import imageRouter from "./routers/image-router.js";
 
 
 const app = express();
@@ -27,11 +27,11 @@ app.use(cors({
 app.use(process.env.STATIC_FILE_PATH || '/files', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/styles', curationRouter); 
-app.use("/", styleRouter);
-app.use("/", rankingRouter);
-app.use("/", commentRouter);
-app.use("/", tagRouter);
-app.use("/", imageRouter);
+// app.use("/", styleRouter);
+// app.use("/", rankingRouter);
+// app.use("/", commentRouter);
+// app.use("/", tagRouter);
+// app.use("/", imageRouter);
 app.use(errorHandler);
 
 
