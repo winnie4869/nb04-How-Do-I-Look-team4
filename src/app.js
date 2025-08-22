@@ -30,7 +30,7 @@ app.use(cors({
 
 app.use(process.env.STATIC_FILE_PATH || '/files', express.static(path.join(__dirname, 'uploads')));
 
-app.use('/styles', curationRouter); 
+app.use("/", curationRouter); 
 // app.use("/", styleRouter);
 // app.use("/", rankingRouter);
 // app.use("/", commentRouter);

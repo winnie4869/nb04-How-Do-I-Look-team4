@@ -1,6 +1,7 @@
 import prisma from "../client/prisma-client.js";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import bcrypt from 'bcrypt'
 
 export class CurationService {
@@ -82,58 +83,49 @@ export class CurationService {
                 password: hashedPassword,
             },
         });
+=======
+
+export const getCuration = async (styleId) => {
+  if (isNaN(styleId)) {
+      const err = new Error("잘못된 요청입니다");
+      err.status = 400;
+      throw err;
+  }
+  
+  return await prisma.style.findUnique({
+    where: { id: styleId },
+    include: {
+      curations: true,   
+      _count: { select: { curations: true } } 
+>>>>>>> 50eaefa (edit controller (#10))
     }
+  });
+};
 
-    // 큐레이팅 목록 조회하기 
-    async getCurations(styleId, page, pageSize, searchBy, keyword) {
-        try {
-            const searchContent = {};
-            if (searchBy && keyword) {
-                if (searchBy === "nickname" || searchBy === "content") {
-                    searchContent[searchBy] = {
-                        contains: keyword,
-                    };
-                }
-            }
 
-            const [totalItems, curations] = await prisma.$transaction([
-                prisma.curation.count({
-                    where: { styleId, ...searchContent },
-                }),
-                prisma.curation.findMany({
-                    where: { styleId, ...searchContent },
-                    skip: (page - 1) * pageSize,
-                    take: pageSize,
-                    include: {
-                        comment: true, // 큐레이션과 연결된 모든 댓글 데이터까지 가져올 수 잇음
-                    },
-                    orderBy: {
-                        createdAt: "desc",
-                    },
-                }),
-            ]);
-            console.log(curations);
-            const totalPages = Math.ceil(totalItems / pageSize);
+export const postCuration = async (styleId, { nickname, content, password, trendy, personality, practicality, costEffectiveness } ) => {
 
-            return {
-                currentPage: page,
-                totalPages,
-                totalItemCount: totalItems,
-                data: curations,
-            };
-        } catch (error) {
-            console.log("Error fetching curations:", error);
-            return {
-                currentPage: 1,
-                totalPages: 0,
-                totalItemCount: 0,
-                data: [],
-            };
-        }
-    }
-}
+  const postedCuration = await prisma.curation.create({
+      data: {
+        styleId,
+        nickname,
+        content,
+        password,
+        trendy,
+        personality,
+        practicality,
+        costEffectiveness
+    },
+  });
+  
+  const styleWithCurations = await prisma.style.findUnique({
+    where: { id: styleId },
+    include: { curations: true }
+  });
+  return styleWithCurations.curations;
+};
 
-//클래스 객체로 넣기 const putCuration = async (curationId, { password, nickname, content, trendy, personality, practicality, costEffectiveness}) => {
+export const putCuration = async (curationId, { password, nickname, content, trendy, personality, practicality, costEffectiveness}) => {
   
   if (isNaN(curationId)) {
     const err = new Error("잘못된 요청입니다");
@@ -217,6 +209,9 @@ export const deleteCuration = async (curationId, password) => {
   return styleWithCurations.curations;
 };
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 50eaefa (edit controller (#10))
 
 export const searchCurationsByKeyword = async (keyword) => {
   if (!keyword) {
@@ -237,7 +232,10 @@ export const searchCurationsByKeyword = async (keyword) => {
 
   return curations;
 };
+<<<<<<< HEAD
 >>>>>>> 81da860 (first (#8))
 =======
 };
 >>>>>>> 5f659fc (Feature/khy (#9))
+=======
+>>>>>>> 50eaefa (edit controller (#10))
