@@ -3,7 +3,7 @@ import prisma from "./client/prisma-client.js";
 import cors from "cors";
 import "dotenv/config";
 import curationRouter from './routers/curating-router.js';
-import { errorHandler } from "./middlewares/errorHandler-middleware.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 import path from "path"; 
 import { fileURLToPath } from "url"; 
 
