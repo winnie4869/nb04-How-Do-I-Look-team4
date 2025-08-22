@@ -28,6 +28,11 @@ app.use(cors({
 }));
 
 app.use('/styles', curationRouter); 
+app.use("/", styleRouter);
+app.use("/", rankingRouter);
+app.use("/", commentRouter);
+app.use("/", tagRouter);
+app.use("/", imageRouter);
 app.use(errorHandler);
 
 
