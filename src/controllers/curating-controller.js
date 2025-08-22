@@ -22,7 +22,7 @@ createCuration = async (req, res, next) => {
         if(nickname.length > 20 ) {
             return res.json({ message: "*20자 이내로 입력해 주세요"});
         }
-        // 패스워드 암호화 부분 (bcrypt 라이브러리 사용)
+        // 패스워드 암호화 부분 
         const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$/;
         if(!passwordRegex.test(password)) {
             return res.json({ message: "*영문, 숫자 조합 8~16자리로 입력해주세요"});
@@ -74,7 +74,7 @@ createCuration = async (req, res, next) => {
   }
 }
 
-export class CurationController {
+// export class CurationController {
 
   async putCurations(req, res, next) {
     try {

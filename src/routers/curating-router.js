@@ -6,9 +6,10 @@ import { CurationController } from "../controllers/curating-controller.js";
 const router = express.Router();
 const controller = new CurationController();
 
-router.get("/styles/:styleId/curations", controller.getCurations.bind(controller));
-router.post("/styles/:styleId/curations", validate(createCurationSchema), controller.postCurations.bind(controller));
-router.put("/curations/:curationId", controller.putCurations.bind(controller));
-router.delete("/curations/:curationId", controller.deleteCurations.bind(controller));
-router.get("/curations/search", controller.searchCurations.bind(controller)) 
+router.post("/:styleId/curations", curationController.createCuration);
+router.get("/:styleId/curations", curationController.getCurations);
+router.put("/:styleId/curations/:curationId", curationController.put..);
+router.delete("/:styleId/curations/:curationId", curationController.delete...);
+              
+    
 export default router;
