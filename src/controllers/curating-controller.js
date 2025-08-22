@@ -42,6 +42,7 @@ createCuration = async (req, res, next) => {
         }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         // 패스워드 암호화 부분 
 =======
         // 패스워드 암호화 부분 (bcrypt 라이브러리 사용)
@@ -51,6 +52,9 @@ createCuration = async (req, res, next) => {
             return res.json({ message: "*영문, 숫자 조합 8~16자리로 입력해주세요"});
 =======
         // 패스워드 암호화 부분 (bcrypt 라이브러리 사용)
+=======
+        // 패스워드 암호화 부분 
+>>>>>>> 479ab34 (survice,controller edit)
         const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$/;
         if(!passwordRegex.test(password)) {
             return res.json({ message: "*영문, 숫자 조합 8~16자리로 입력해주세요"});
@@ -196,7 +200,7 @@ import { getCuration, postCuration, putCuration, deleteCuration, searchCurations
 =======
 }
 
-export class CurationController {
+// export class CurationController {
 
   async putCurations(req, res, next) {
 >>>>>>> fa487cd (Feature/khy (#9))

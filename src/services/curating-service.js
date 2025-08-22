@@ -111,16 +111,11 @@ import bcrypt from 'bcrypt'
 >>>>>>> fa487cd (Feature/khy (#9))
 
 export class CurationService {
-    //암호화 처리 부분 (post만 암호화 처리 하기 ..)
+    //암호화 처리 가공하는 부분
     async createCuration(data) {
         const { password, ...restOfData } = data;
-        console.log('암호화 전 비밀번호:', password);
-
-        const saltRound = 10; // 암호 보안 수준 정도 설정 (10-12가 적당하다고 함)
+        const saltRound = 10; // 암호 보안 수준 정도 설정
         const hashedPassword = await bcrypt.hash(password, saltRound);
-
-        console.log('암호화 후 비밀번호:', hashedPassword);
-
         return await prisma.curation.create({
             data: {
                 ...restOfData,
@@ -151,16 +146,14 @@ export class CurationService {
                     skip: (page - 1) * pageSize,
                     take: pageSize,
                     include: {
-                        comment: true, // 큐레이션과 연결된 모든 댓글 데이터까지 가져올 수 잇음
+                        comment: true, // 큐레이션과 연결된 모든 댓글 데이터까지 조회
                     },
                     orderBy: {
                         createdAt: "desc",
                     },
                 }),
             ]);
-            console.log(curations);
             const totalPages = Math.ceil(totalItems / pageSize);
-
             return {
                 currentPage: page,
                 totalPages,
@@ -177,74 +170,41 @@ export class CurationService {
             };
         }
     }
-}
 
-//클래스 객체로 넣기 const putCuration = async (curationId, { password, nickname, content, trendy, personality, practicality, costEffectiveness}) => {
-  
-  if (isNaN(curationId)) {
-    const err = new Error("잘못된 요청입니다");
-    err.status = 400;
-    throw err;
-  }
-  
-  const existingCuration = await prisma.curation.findUnique({
-    where: { id: curationId }
-  });
-  
-  
-  if (!existingCuration) {
-    const err = new Error("존재하지 않습니다");
-    err.status = 404;
-    throw err;
-  }
+    async putCuration(curationId, data) {
+        if (isNaN(curationId)) {
+            const err = new Error("잘못된 요청입니다");
+            err.status = 400;
+            throw err;
+        }
 
-  
-  const effectivePassword = password ?? existingCuration.password;
-  if (effectivePassword !== existingCuration.password) {
-    const err = new Error("비밀번호가 일치하지 않습니다");
-    err.status = 403;
-    throw err;
-  }
+        const existingCuration = await prisma.curation.findUnique({
+            where: { id: curationId }
+        });
+        if (!existingCuration) {
+            const err = new Error("존재하지 않습니다");
+            err.status = 404;
+            throw err;
+        }
 
-  const updatedCuration = await prisma.curation.update({
-      where: { id: curationId },
-      data: {
-        nickname,
-        content,
-        trendy,
-        personality,
-        practicality,
-        costEffectiveness
-      },
-    }); 
+        // 비밀번호 검증 (bcrypt.compare 사용)
+        const { password, nickname, content, trendy, personality, practicality, costEffectiveness } = data; // data 객체에서 password를 구조분해 할당
 
-   
-  const styleWithCurations = await prisma.style.findUnique({
-    where: { id: existingCuration.styleId },
-    include: { curations: true }
-  });
-  return styleWithCurations.curations;
-};
+        if (!password) {
+            const err = new Error("비밀번호가 입력되지 않았습니다");
+            err.status = 400;
+            throw err;
+        }
 
- // 기존 큐레이션 조회
-export const deleteCuration = async (curationId, password) => {
-  // 요청 검증
-  if (isNaN(curationId)) {
-    const err = new Error("잘못된 요청입니다");
-    err.status = 400;
-    throw err;
-  }
-  
-  const existingCuration = await prisma.curation.findUnique({
-    where: { id: curationId }
-  });
+        const passwordMatch = await bcrypt.compare(password, existingCuration.password);
 
-  if (!existingCuration) {
-    const err = new Error("존재하지 않습니다");
-    err.status = 404;
-    throw err;
-  }
+        if (!passwordMatch) {
+            const err = new Error("비밀번호가 일치하지 않습니다");
+            err.status = 403;
+            throw err;
+        }
 
+<<<<<<< HEAD
   
   if (!password || password !== existingCuration.password) { 
     const err = new Error("비밀번호가 일치하지 않습니다");
@@ -482,4 +442,72 @@ export const searchCurationsByKeyword = async (keyword) => {
 =======
 };
 >>>>>>> fa487cd (Feature/khy (#9))
+<<<<<<< HEAD
 >>>>>>> f5acbc3 (Feature/khy (#9))
+=======
+=======
+        const updatedCuration = await prisma.curation.update({
+            where: { id: curationId },
+            data: {
+                nickname,
+                content,
+                trendy,
+                personality,
+                practicality,
+                costEffectiveness
+            },
+        });
+
+
+        const styleWithCurations = await prisma.style.findUnique({
+            where: { id: existingCuration.styleId },
+            include: { curations: true }
+        });
+        return styleWithCurations.curations;
+    }
+
+    // 기존 큐레이션 조회
+    // 요청 검증
+
+    async deleteCuration(curationId, password) {
+        if (isNaN(curationId)) {
+            const err = new Error("잘못된 요청입니다");
+            err.status = 400;
+            throw err;
+        }
+
+        const existingCuration = await prisma.curation.findUnique({
+            where: { id: curationId }
+        });
+        if (!existingCuration) {
+            const err = new Error("존재하지 않습니다");
+            err.status = 404;
+            throw err;
+        }
+
+        if (!password) {
+            const err = new Error("비밀번호가 입력되지 않았습니다");
+            err.status = 400;
+            throw err;
+        }
+        const passwordMatch = await bcrypt.compare(password, existingCuration.password);
+
+        if (!passwordMatch) {
+            const err = new Error("비밀번호가 일치하지 않습니다");
+            err.status = 403;
+            throw err;
+        }
+
+        await prisma.curation.delete({
+            where: { id: curationId }
+        });
+
+        const styleWithCurations = await prisma.style.findUnique({
+            where: { id: existingCuration.styleId },
+            include: { curations: true }
+        });
+        return styleWithCurations.curations;
+    };
+};
+>>>>>>> e26a3c3 (survice,controller edit)
+>>>>>>> 479ab34 (survice,controller edit)
