@@ -1,6 +1,6 @@
 import { CurationService } from "../services/curating-service.js";
 
-//객체 지향으로 만들어라는 요구사항 때문에 만들었는데 일단 . 만들었다 
+//객체 지향으로 만들어라는 요구사항 때문에 만들
 export class CurationController {
   constructor() {
     this.curationService = new CurationService();
@@ -34,7 +34,7 @@ createCuration = async (req, res, next) => {
             content,
             ...rating
         });
-        const { password: _, ...curationResponse } = newCuration; // 클라이언트로 응답 시에 패스워드 필드는 제외하기 위해서 구조 분해 썻ㄷ.
+        const { password: _, ...curationResponse } = newCuration; // 클라이언트로 응답 시에 패스워드 필드는 제외하기 위해서 구조 분해 씀
         res.status(201).json(newCuration);
     } catch (error) {
         next(error);
@@ -69,4 +69,57 @@ createCuration = async (req, res, next) => {
       next(error); 
     }
   }
+}
+
+export class CurationController {
+
+  async putCurations(req, res, next) {
+    try {
+      const curationId = parseInt(req.params.curationId,10);
+      const { password, nickname, content, trendy, personality, practicality, costEffectiveness } = req.body;
+
+     const updatedCuration = await putCuration(curationId, {
+      password,
+      nickname,
+      content,
+      trendy,
+      personality,
+      practicality,
+      costEffectiveness
+    });
+
+    res.status(200).json({
+      data: {
+        id: updatedCuration.id,
+        nickname: updatedCuration.nickname,
+        content: updatedCuration.content,
+        trendy: updatedCuration.trendy,
+        personality: updatedCuration.personality,
+        practicality: updatedCuration.practicality,
+        costEffectiveness: updatedCuration.costEffectiveness,
+        createdAt: updatedCuration.createdAt,
+        comment: updatedCuration.comment || null  
+      }
+    });
+
+  }  catch (error) {
+      next (error);
+  }
+};
+
+  async deleteCurations(req, res, next) {
+    try {
+     const curationId = parseInt(req.params.curationId, 10);
+     const { password } = req.body;
+
+      const deletedCuration = await deleteCuration(curationId, password);
+
+     res.status(200).json({
+       message: "큐레이팅 삭제 성공",
+       data: deletedCuration
+    });
+
+  }  catch (error) {
+      next (error)
+  };
 }

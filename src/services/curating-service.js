@@ -68,3 +68,88 @@ export class CurationService {
         }
     }
 }
+
+//클래스 객체로 넣기 const putCuration = async (curationId, { password, nickname, content, trendy, personality, practicality, costEffectiveness}) => {
+  
+  if (isNaN(curationId)) {
+    const err = new Error("잘못된 요청입니다");
+    err.status = 400;
+    throw err;
+  }
+  
+  const existingCuration = await prisma.curation.findUnique({
+    where: { id: curationId }
+  });
+  
+  
+  if (!existingCuration) {
+    const err = new Error("존재하지 않습니다");
+    err.status = 404;
+    throw err;
+  }
+
+  
+  const effectivePassword = password ?? existingCuration.password;
+  if (effectivePassword !== existingCuration.password) {
+    const err = new Error("비밀번호가 일치하지 않습니다");
+    err.status = 403;
+    throw err;
+  }
+
+  const updatedCuration = await prisma.curation.update({
+      where: { id: curationId },
+      data: {
+        nickname,
+        content,
+        trendy,
+        personality,
+        practicality,
+        costEffectiveness
+      },
+    }); 
+
+   
+  const styleWithCurations = await prisma.style.findUnique({
+    where: { id: existingCuration.styleId },
+    include: { curations: true }
+  });
+  return styleWithCurations.curations;
+};
+
+ // 기존 큐레이션 조회
+export const deleteCuration = async (curationId, password) => {
+  // 요청 검증
+  if (isNaN(curationId)) {
+    const err = new Error("잘못된 요청입니다");
+    err.status = 400;
+    throw err;
+  }
+  
+  const existingCuration = await prisma.curation.findUnique({
+    where: { id: curationId }
+  });
+
+  if (!existingCuration) {
+    const err = new Error("존재하지 않습니다");
+    err.status = 404;
+    throw err;
+  }
+
+  
+  if (!password || password !== existingCuration.password) { 
+    const err = new Error("비밀번호가 일치하지 않습니다");
+    err.status = 403;
+    throw err;
+  }
+  
+  await prisma.curation.delete({
+    where: { id: curationId }
+});
+  
+  const styleWithCurations = await prisma.style.findUnique({
+    where: { id: existingCuration.styleId },
+    include: { curations: true }
+  });
+  return styleWithCurations.curations;
+};
+};
