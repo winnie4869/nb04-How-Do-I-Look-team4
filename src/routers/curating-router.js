@@ -1,8 +1,10 @@
-import { Router } from "express";
+import express from 'express';
+import { validate } from '../middlewares/validators-middleware.js';
+import { createCurationSchema } from '../validators/curating-validator.js';
 import { CurationController } from "../controllers/curating-controller.js";
 
-const router = Router();
-const curationController = new CurationController();
+const router = express.Router();
+const controller = new CurationController();
 
 <<<<<<< HEAD
 <<<<<<< HEAD

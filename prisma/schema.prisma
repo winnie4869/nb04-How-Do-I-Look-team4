@@ -75,7 +75,7 @@ model Curation {
 model Comment {
   id         Int      @id @default(autoincrement())
   nickname   String
-  // password   String   // 암호화된 비밀번호
+  // password   String
   content    String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
