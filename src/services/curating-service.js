@@ -137,39 +137,33 @@ export class CurationService {
                 }
             }
 
-            const [totalItems, curations] = await prisma.$transaction([
-                prisma.curation.count({
-                    where: { styleId, ...searchContent },
-                }),
-                prisma.curation.findMany({
-                    where: { styleId, ...searchContent },
-                    skip: (page - 1) * pageSize,
-                    take: pageSize,
-                    include: {
-                        comment: true, // 큐레이션과 연결된 모든 댓글 데이터까지 조회
-                    },
-                    orderBy: {
-                        createdAt: "desc",
-                    },
-                }),
-            ]);
-            const totalPages = Math.ceil(totalItems / pageSize);
-            return {
-                currentPage: page,
-                totalPages,
-                totalItemCount: totalItems,
-                data: curations,
-            };
-        } catch (error) {
-            console.log("Error fetching curations:", error);
-            return {
-                currentPage: 1,
-                totalPages: 0,
-                totalItemCount: 0,
-                data: [],
-            };
-        }
+        const [totalItems, curations] = await prisma.$transaction([
+            prisma.curation.count({
+                where: { styleId, ...searchContent},
+            }),
+            prisma.curation.findMany({
+                where: { styleId, ...searchContent },
+                skip: (page - 1) * pageSize,
+                take: pageSize,
+                include: {
+                comment: true, // 큐레이션과 연결된 모든 댓글 데이터까지 가져올 수 잇음
+                },
+                orderBy: {
+                    createdAt: "desc",
+                },
+            }),
+        ]);
+
+        const totalPages = Math.ceil(totalItems / pageSize);
+
+        return {
+            currentPage: page,
+            totalPages,
+            totalItemCount: totalItems,
+            data: curations,
+        };
     }
+<<<<<<< HEAD
 
     async putCuration(curationId, data) {
         if (isNaN(curationId)) {
@@ -510,4 +504,10 @@ export const searchCurationsByKeyword = async (keyword) => {
     };
 };
 >>>>>>> e26a3c3 (survice,controller edit)
+<<<<<<< HEAD
 >>>>>>> 479ab34 (survice,controller edit)
+=======
+=======
+}
+>>>>>>> 3d4d03b (edittt)
+>>>>>>> 3dc2665 (edittt)

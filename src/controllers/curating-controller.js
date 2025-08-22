@@ -139,11 +139,14 @@ createCuration = async (req, res, next) => {
       next(error); 
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
   };
 }
 =======
 import { getCuration, postCuration, putCuration, deleteCuration, searchCurationsByKeyword } from "../services/curating-service.js";
 =======
+=======
+>>>>>>> 3dc2665 (edittt)
   }
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -362,6 +365,8 @@ import { getCuration, postCuration, putCuration, deleteCuration, searchCurations
 
   }  catch (error) {
       next (error)
+=======
+>>>>>>> 3d4d03b (edittt)
   };
 >>>>>>> fa487cd (Feature/khy (#9))
 }
