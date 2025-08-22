@@ -1,7 +1,6 @@
 import * as styleService from '../services/style-service.js';
 
 export const getRanking = async (req, res) => {
-  console.log("rankingController")
   try {
     const { page = 1, pageSize = 10, rankBy = 'total' } = req.query;
 
