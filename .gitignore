@@ -40,3 +40,14 @@ docs/
 
 # 기타
 npm-shrinkwrap.json
+
+
+/src/controllers/ranking-controller.js
+/src/routers/comment-router.js
+/src/routers/image-router.js
+/src/routers/style-router-sub.js
+/src/routers/style-router.js
+/src/routers/tag-router.js
+
+/src/survices/ranking-service.js
+/src/survices/style-survice.js
