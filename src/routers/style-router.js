@@ -214,6 +214,7 @@ router.get('/styles', async (req, res) => {
 });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 router.get('/styles/:styleId', async (req, res) => {
   const { styleId } = req.params;
@@ -294,6 +295,8 @@ router.get('/styles/:styleId', async (req, res) => {
 });
 
 >>>>>>> b41f66e (1)
+=======
+>>>>>>> 969ac04 (IDK)
 router.put('/styles/:styleId', async (req, res) => {
   const { styleId } = req.params;
   const { nickname, title, content, password, categories, tags, imageUrls } = req.body;
@@ -415,6 +418,9 @@ router.put('/styles/:styleId', async (req, res) => {
 });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 969ac04 (IDK)
 router.get('/styles/popular-tags', async (req, res) => {
   try {
     const popularTags = await prisma.styleTag.groupBy({
@@ -458,8 +464,11 @@ router.get('/styles/popular-tags', async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
 =======
 >>>>>>> b41f66e (1)
+=======
+>>>>>>> 969ac04 (IDK)
 router.delete('/styles/:styleId', async (req, res) => {
   const { styleId } = req.params;
   const { password } = req.body;
@@ -501,7 +510,11 @@ router.delete('/styles/:styleId', async (req, res) => {
 });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> b41f66e (1)
+=======
+
+>>>>>>> 969ac04 (IDK)
 export default router;
