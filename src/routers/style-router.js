@@ -213,84 +213,6 @@ router.get('/styles', async (req, res) => {
   }
 });
 
-router.get('/styles/:styleId', async (req, res) => {
-  const { styleId } = req.params;
-
-  try {
-    const numericStyleId = Number(styleId);
-
-    // styleId가 유효한 숫자인지 확인
-    if (isNaN(numericStyleId) || numericStyleId <= 0) {
-      return res.status(400).json({ message: '잘못된 요청입니다' });
-    }
-
-    // 트랜잭션을 사용하여 조회수 증가와 데이터 조회 작업을 원자적으로 처리
-    const style = await prisma.$transaction(async (tx) => {
-      // 조회수 1 증가
-      await tx.style.update({
-        where: { id: numericStyleId },
-        data: {
-          viewCount: {
-            increment: 1,
-          },
-        },
-      });
-      
-      // 상세 정보 조회
-      const styleDetails = await tx.style.findUnique({
-        where: { id: numericStyleId },
-        include: {
-          images: true,
-          categories: true,
-          tags: {
-            select: {
-              tag: true,
-            },
-          },
-        },
-      });
-
-      return styleDetails;
-    });
-
-    if (!style) {
-      return res.status(404).json({ message: '존재하지 않습니다' });
-    }
-
-    // 응답 형식에 맞춰 데이터 가공
-    const formattedCategories = style.categories.reduce((acc, cat) => {
-      acc[cat.key] = {
-        name: cat.name,
-        brand: cat.brand,
-        price: cat.price,
-      };
-      return acc;
-    }, {});
-
-    const formattedTags = style.tags.map(styleTag => styleTag.tag.name);
-    const formattedImageUrls = style.images.map(image => image.url);
-
-    const formattedResponse = {
-      id: style.id,
-      nickname: style.nickname,
-      title: style.title,
-      content: style.content,
-      viewCount: style.viewCount,
-      curationCount: style.curationCount,
-      createdAt: style.createdAt,
-      categories: formattedCategories,
-      tags: formattedTags,
-      imageUrls: formattedImageUrls,
-    };
-
-    res.status(200).json(formattedResponse);
-
-  } catch (error) {
-    console.error('스타일 게시글 상세 조회 중 오류 발생:', error);
-    res.status(500).json({ error: '서버 오류가 발생했습니다.' });
-  }
-});
-
 router.put('/styles/:styleId', async (req, res) => {
   const { styleId } = req.params;
   const { nickname, title, content, password, categories, tags, imageUrls } = req.body;
@@ -411,6 +333,49 @@ router.put('/styles/:styleId', async (req, res) => {
   }
 });
 
+router.get('/styles/popular-tags', async (req, res) => {
+  try {
+    const popularTags = await prisma.styleTag.groupBy({
+      by: ['tagId'],
+      _count: {
+        tagId: true,
+      },
+      orderBy: {
+        _count: {
+          tagId: 'desc',
+        },
+      },
+      take: 10, // 상위 10개 태그만 조회
+    });
+
+    // 태그 이름을 가져오기 위해 조인 또는 별도 쿼리 실행
+    const tagIds = popularTags.map(tag => tag.tagId);
+    const tags = await prisma.tag.findMany({
+      where: {
+        id: { in: tagIds },
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    // 태그 이름과 카운트를 병합
+    const formattedPopularTags = popularTags.map(popularTag => {
+      const tagInfo = tags.find(tag => tag.id === popularTag.tagId);
+      return {
+        name: tagInfo ? tagInfo.name : 'Unknown',
+        count: popularTag._count.tagId,
+      };
+    });
+
+    res.status(200).json(formattedPopularTags);
+  } catch (error) {
+    console.error('인기 태그 조회 중 오류 발생:', error);
+    res.status(500).json({ error: '서버 오류가 발생했습니다.' });
+  }
+});
+
 router.delete('/styles/:styleId', async (req, res) => {
   const { styleId } = req.params;
   const { password } = req.body;
@@ -450,5 +415,6 @@ router.delete('/styles/:styleId', async (req, res) => {
     res.status(500).json({ error: '서버 오류가 발생했습니다.' });
   }
 });
+
 
 export default router;
