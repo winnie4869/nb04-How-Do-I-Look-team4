@@ -4,7 +4,7 @@
 
 # 수정된 부분
 /src/middilewares
-/scj.js
+scj.js
 /src/routers/comment-router.js
 /src/routers/image-router.js
 /src/routers/tag-router.js
