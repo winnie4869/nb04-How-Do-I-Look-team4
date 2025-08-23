@@ -4,22 +4,14 @@ import { CurationService } from "../services/curating-service.js";
 =======
 >>>>>>> 5f659fc (Feature/khy (#9))
 import { CurationService } from "../services/curating-service.js";
-import { CurationService } from "../services/curating-service.js";
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 //객체 지향으로 만들어라는 요구사항 때문에 만들
-=======
-//객체 지향으로 만들어라는 요구사항 때문에 만들었는데 일단 . 만들었다 
->>>>>>> 8e816fa (first commit)
-=======
-//객체 지향으로 만들어라는 요구사항 때문에 만들
->>>>>>> fa487cd (Feature/khy (#9))
 export class CurationController {
   constructor() {
     this.curationService = new CurationService();
   }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -97,6 +89,8 @@ createCuration = async (req, res, next) => {
   getCurations = async (req, res, next) => {
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+>>>>>>> e5a4550 (edit2)
   // 큐레이션 목록 조회 (GET)
   getCurations = async (req, res, next) => {
 =======
@@ -117,27 +111,21 @@ createCuration = async (req, res, next) => {
         keyword
       );
 
-<<<<<<< HEAD
-<<<<<<< HEAD
        // 결과가 없을 때도 통일된 구조로 응답
       res.status(200).json({
         status: 200,
         message: "큐레이션 조회 성공",
         data: results || {
-=======
-       if (!results) {
-        return res.status(200).json({
->>>>>>> 6b1b4de (1)
           currentPage: parseInt(page) || 1,
           totalPages: 0,
           totalItemCount: 0,
           data: [],
-<<<<<<< HEAD
         }
       });
     } catch (error) {
       next(error); 
     }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   };
@@ -156,6 +144,9 @@ import { getCuration, postCuration, putCuration, deleteCuration, searchCurations
 >>>>>>> 50eaefa (edit controller (#10))
 =======
 >>>>>>> f5acbc3 (Feature/khy (#9))
+=======
+  }
+>>>>>>> e5a4550 (edit2)
 
   // 큐레이션 등록 (POST)
   postCurations = async (req, res, next) => {
@@ -200,18 +191,10 @@ import { getCuration, postCuration, putCuration, deleteCuration, searchCurations
 
   // 큐레이션 수정 (PUT)
   putCurations = async (req, res, next) => {
-=======
-}
-
-// export class CurationController {
-
-  async putCurations(req, res, next) {
->>>>>>> fa487cd (Feature/khy (#9))
     try {
       const curationId = parseInt(req.params.curationId,10);
       const { password, nickname, content, trendy, personality, practicality, costEffectiveness } = req.body;
 
-<<<<<<< HEAD
       // 등록시 입력 오류 부분 
       if (!nickname || !content || !password) { //! 이 부분은 느낌표 뒤에 오는 값이 falsy이면 true로 실행이 되면서 falsy값을 모두 잡아줌. 그래서 null할당 x
         return res.status(400).json({ message: "필수 입력사항입니다" });
@@ -243,38 +226,11 @@ import { getCuration, postCuration, putCuration, deleteCuration, searchCurations
       message: "큐레이션 수정 성공",
       data: curationResponse
     })
-=======
-     const updatedCuration = await putCuration(curationId, {
-      password,
-      nickname,
-      content,
-      trendy,
-      personality,
-      practicality,
-      costEffectiveness
-    });
-
-    res.status(200).json({
-      data: {
-        id: updatedCuration.id,
-        nickname: updatedCuration.nickname,
-        content: updatedCuration.content,
-        trendy: updatedCuration.trendy,
-        personality: updatedCuration.personality,
-        practicality: updatedCuration.practicality,
-        costEffectiveness: updatedCuration.costEffectiveness,
-        createdAt: updatedCuration.createdAt,
-        comment: updatedCuration.comment || null  
-      }
-    });
-
->>>>>>> fa487cd (Feature/khy (#9))
   }  catch (error) {
       next (error);
   }
 };
 
-<<<<<<< HEAD
   // 큐레이션 삭제 (DELETE)
   deleteCurations = async (req, res, next) => {
     try {
@@ -301,6 +257,7 @@ import { getCuration, postCuration, putCuration, deleteCuration, searchCurations
 <<<<<<< HEAD
 <<<<<<< HEAD
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 
   async searchCurations(req, res, next) {
@@ -371,3 +328,6 @@ import { getCuration, postCuration, putCuration, deleteCuration, searchCurations
 >>>>>>> fa487cd (Feature/khy (#9))
 }
 >>>>>>> f5acbc3 (Feature/khy (#9))
+=======
+}
+>>>>>>> e5a4550 (edit2)

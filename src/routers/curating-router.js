@@ -12,6 +12,7 @@ const controller = new CurationController();
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 router.post("/:styleId/curations", curationController.createCuration);
 router.get("/:styleId/curations", curationController.getCurations);
 router.put("/curations/:curationId", curationController.putCuration);
@@ -50,6 +51,12 @@ router.get("/:styleId/curations", curationController.getCurations);
 router.put("/curations/:curationId", curationController.putCuration);
 router.delete("/curations/:curationId", curationController.deleteCuration);
 >>>>>>> 47ae24d (khy edit)
+=======
+router.post("/styles/:styleId/curations", CurationController.postCurations);
+router.get("/styles/:styleId/curations", CurationController.getCurations);
+router.put("/curations/:curationId", CurationController.putCurations)
+router.delete("/curations/:curationId", CurationController.deleteCurations) 
+>>>>>>> e5a4550 (edit2)
               
 <<<<<<< HEAD
 <<<<<<< HEAD

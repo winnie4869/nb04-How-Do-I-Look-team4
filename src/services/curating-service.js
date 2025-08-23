@@ -5,6 +5,7 @@ import prisma from "../client/prisma-client.js";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import bcrypt from 'bcrypt'
 
 export class CurationService {
@@ -107,8 +108,9 @@ export const getCuration = async (styleId) => {
 >>>>>>> 50eaefa (edit controller (#10))
 =======
 =======
+=======
+>>>>>>> e5a4550 (edit2)
 import bcrypt from 'bcrypt'
->>>>>>> fa487cd (Feature/khy (#9))
 
 export class CurationService {
     //암호화 처리 가공하는 부분
@@ -167,7 +169,6 @@ export class CurationService {
             throw new Error("큐레이션 목록을 가져오는 데 실패했습니다.");
         }
     }
-<<<<<<< HEAD
 
     async putCuration(curationId, data) {
         if (isNaN(curationId)) {
@@ -201,6 +202,7 @@ export class CurationService {
             err.status = 403;
             throw err;
         }
+<<<<<<< HEAD
 
 <<<<<<< HEAD
   
@@ -454,16 +456,24 @@ export const searchCurationsByKeyword = async (keyword) => {
                 practicality,
                 costEffectiveness
             },
-        });
+=======
+        if (!password || password !== existingCuration.password) {
+            const err = new Error("비밀번호가 일치하지 않습니다");
+            err.status = 403;
+            throw err;
+        }
 
+        await prisma.curation.delete({
+            where: { id: curationId }
+>>>>>>> e5a4550 (edit2)
+        });
 
         const styleWithCurations = await prisma.style.findUnique({
             where: { id: existingCuration.styleId },
             include: { curations: true }
         });
         return styleWithCurations.curations;
-    }
-
+    };
     // 기존 큐레이션 조회
     // 요청 검증
 
@@ -506,6 +516,7 @@ export const searchCurationsByKeyword = async (keyword) => {
         });
         return styleWithCurations.curations;
     };
+<<<<<<< HEAD
 };
 >>>>>>> e26a3c3 (survice,controller edit)
 <<<<<<< HEAD
@@ -515,3 +526,6 @@ export const searchCurationsByKeyword = async (keyword) => {
 }
 >>>>>>> 3d4d03b (edittt)
 >>>>>>> 3dc2665 (edittt)
+=======
+};
+>>>>>>> e5a4550 (edit2)
