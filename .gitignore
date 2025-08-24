@@ -64,3 +64,4 @@ npm-shrinkwrap.json
 
 
 src/validators
+prisma/migrations
