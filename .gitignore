@@ -1,10 +1,10 @@
 
 ex.js
-
+seed.js
 /src/generated/prisma
 .DS_Store
 /http
-
+uploads
 /src/ex.js
 /src/routers/comments-router.js
 /src/routers/curating-routers.js
@@ -62,3 +62,5 @@ npm-shrinkwrap.json
 /src/services/ranking-service.js
 /src/services/style-service.js
 
+
+src/validators
