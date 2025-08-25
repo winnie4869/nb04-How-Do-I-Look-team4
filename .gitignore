@@ -40,3 +40,23 @@ docs/
 
 # 기타
 npm-shrinkwrap.json
+
+src/uploads
+
+uploads/
+
+*# 폴더 전체 무시*
+
+src/routers/*
+
+src/controllers/*
+
+src/services/*
+
+*# 특정 파일은 예외 처리*
+
+!src/routers/style-router.js
+
+!src/controllers/style-controller.js
+
+!src/services/style-service.js
