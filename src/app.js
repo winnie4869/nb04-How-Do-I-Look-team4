@@ -1,11 +1,12 @@
 import express from "express";
-import prisma from "./client/prisma-client.js";
+import prisma from './client/prisma-client.js';
 import cors from "cors";
 import "dotenv/config";
 import curationRouter from './routers/curating-router.js';
-import { errorHandler } from "./middlewares/errorHandler.js";
+import errorHandler from "./middlewares/errorHandler-middleware.js"; //default로 export한 건 중괄호 없이 가져와야 됨
 import path from "path"; 
 import { fileURLToPath } from "url"; 
+
 
 // import styleRouter from "./routers/style-router.js";
 // import rankingRouter from "./routers/ranking-router.js";
@@ -15,7 +16,7 @@ import { fileURLToPath } from "url";
 
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,13 +29,14 @@ app.use(cors({
 
 app.use(process.env.STATIC_FILE_PATH || '/files', express.static(path.join(__dirname, 'uploads')));
 
-app.use("/", curationRouter); 
-// app.use("/", styleRouter);
-// app.use("/", rankingRouter);
-// app.use("/", commentRouter);
-// app.use("/", tagRouter);
-// app.use("/", imageRouter);
+app.use('/', curationRouter); 
+// app.use('/', styleRouter);
+// app.use('/', rankingRouter);
+// app.use('/', commentRouter);
+// app.use('/', tagRouter);
+// app.use('/', imageRouter);
 app.use(errorHandler);
+
 
 
 app.get("/", (req, res) => {
@@ -68,19 +70,20 @@ process.on('beforeExit', async () => {
   await prisma.$disconnect();
 });
 
+
 // 서버 실행
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
-// async function testDB() {
-//   try {
-//     await prisma.$connect();
-//     console.log("✅ DB 연결 성공!");
-//   } catch (err) {
-//     console.error("❌ DB 연결 실패:", err);
-//   }
-// }
-// testDB();
+async function testDB() {
+  try {
+    await prisma.$connect();
+    console.log("✅ DB 연결 성공!");
+  } catch (err) {
+    console.error("❌ DB 연결 실패:", err);
+  }
+}
+testDB();
 
 export default app;
