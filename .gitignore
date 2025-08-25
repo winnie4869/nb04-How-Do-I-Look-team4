@@ -18,10 +18,8 @@ scj.js
 
 /src/validators/curating-validator.js
 /src/middlewares/validator-middleware.js
-
-/src/uploads/9c1d548d-5825-4e60-bb05-6fda7331affe.jpeg 
-/src/uploads/21e5df6e-fbe0-44de-a990-e93b339fdbb3.jpg 
-/src/uploads/42e50282-398b-4979-b86e-1ee85ecfd87c.avif
+/src/uploads
+uploads
 
 /prisma/seed.js
 # 의존성 디렉토리

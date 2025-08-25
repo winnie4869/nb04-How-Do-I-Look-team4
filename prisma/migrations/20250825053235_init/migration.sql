@@ -72,7 +72,6 @@ CREATE TABLE "public"."Curation" (
 CREATE TABLE "public"."Comment" (
     "id" SERIAL NOT NULL,
     "nickname" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
