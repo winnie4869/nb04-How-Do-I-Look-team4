@@ -29,14 +29,13 @@ app.use(cors({
 
 app.use(process.env.STATIC_FILE_PATH || '/files', express.static(path.join(__dirname, 'uploads')));
 
-
-
 app.use('/', curationRouter); 
 // app.use('/', styleRouter);
 // app.use('/', rankingRouter);
 // app.use('/', commentRouter);
 // app.use('/', tagRouter);
 // app.use('/', imageRouter);
+app.use(errorHandler);
 
 
 
@@ -44,13 +43,25 @@ app.get("/", (req, res) => {
     res.send("서버 정상");
 });
 
+// app.use("/", styleRouter);
+
+// 랭킹 라우터 연결 (기본 경로가 /ranking)
+// app.use('/ranking', rankingRouter);
+
 // 모든 라우터가 처리하지 못한 요청에 대한 404 Not Found 핸들러
 // 이 미들웨어는 항상 가장 마지막에 위치해야 합니다. (와일드카드 '*')
 app.all(/(.*)/, (req, res) => {
     res.status(404).send({ message: '요청하신 리소스를 찾을 수 없습니다.' });
 });
 
-app.use(errorHandler);
+
+// // 애플리케이션 종료 시 Prisma 클라이언트 연결 해제
+// process.on('beforeExit', async () => {
+//   console.log('Server is shutting down. Disconnecting from database...');
+//   await prisma.$disconnect();
+// });
+
+// app.use(errorHandler);
 
 
 // 애플리케이션 종료 시 Prisma 클라이언트 연결 해제

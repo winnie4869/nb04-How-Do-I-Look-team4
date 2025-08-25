@@ -1,3 +1,5 @@
+ex.js
+
 /src/generated/prisma
 .DS_Store
 /http
@@ -22,6 +24,9 @@ scj.js
 uploads
 
 /prisma/seed.js
+
+/src/ex.js
+
 # 의존성 디렉토리
 node_modules/
 
@@ -57,6 +62,3 @@ docs/
 
 # 기타
 npm-shrinkwrap.json
-
-
-

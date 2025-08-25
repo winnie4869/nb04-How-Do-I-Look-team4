@@ -6,22 +6,19 @@ export class CurationService {
     async postCuration(data) {
         const hashedPassword = await bcrypt.hash(data.password, 10);
         
-        // 큐레이션과 스타일 업데이트를 트랜잭션으로 묶음
         const newCuration = await prisma.$transaction(async (tx) => {
-            // 1. 큐레이션 생성
             const createdCuration = await tx.curation.create({
                 data: {
                     styleId: data.styleId,
                     nickname: data.nickname,
                     content: data.content,
-                    password: hashedPassword, // 해싱된 비밀번호 사용
+                    password: hashedPassword,
                     trendy: data.trendy,
                     personality: data.personality,
                     practicality: data.practicality,
                     costEffectiveness: data.costEffectiveness,
                 },
             });
-            // 2. 스타일의 curationCount 증가
             await tx.style.update({
                 where: { id: data.styleId },
                 data: {
@@ -36,7 +33,6 @@ export class CurationService {
         return newCuration;
     }
 
-    // 큐레이팅 목록 조회하기 
     async getCurations(styleId, page, pageSize, searchBy, keyword) {
         try {
             const searchContent = {};
@@ -87,7 +83,6 @@ export class CurationService {
         }
     }
 
-    // 큐레이션 수정 (PUT)
     async putCuration(curationId, password, updateData) {
         if (isNaN(curationId)) {
             const err = new Error("잘못된 요청입니다");
@@ -121,7 +116,6 @@ export class CurationService {
         return updatedCuration;
     }
 
-    // 큐레이션 삭제 (DELETE)
     async deleteCuration(curationId, password) {
         if (isNaN(curationId)) {
             const err = new Error("잘못된 요청입니다");
@@ -148,8 +142,6 @@ export class CurationService {
             await tx.curation.delete({
                 where: { id: curationId }
             });
-
-            // 스타일의 curationCount 감소
             await tx.style.update({
                 where: { id: existingCuration.styleId },
                 data: {

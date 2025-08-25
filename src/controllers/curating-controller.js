@@ -5,7 +5,6 @@ export class CurationController {
     this.curationService = new CurationService();
   }
 
-  // 큐레이션 목록 조회 (GET)
   getCurations = async (req, res, next) => {
     try {
       const { styleId } = req.params;
@@ -33,7 +32,6 @@ export class CurationController {
     }
   }
 
-  // 큐레이션 등록 (POST)
   postCurations = async (req, res, next) => {
     try {
       const {styleId} = req.params;
@@ -62,7 +60,6 @@ export class CurationController {
     }
   };
 
-  // 큐레이션 수정 (PUT)
   putCurations = async (req, res, next) => {
     try {
       const curationId = parseInt(req.params.curationId, 10);
@@ -86,7 +83,6 @@ export class CurationController {
     }
   };
 
-  // 큐레이션 삭제 (DELETE)
   deleteCurations = async (req, res, next) => {
     try {
       const curationId = parseInt(req.params.curationId, 10);
