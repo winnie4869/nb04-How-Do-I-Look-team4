@@ -10,7 +10,7 @@
 
 ## Member Notes
 
-1. [13] LSJ: 코멘트 담당입니다. 현재 GIT PR, merge 방법에 대한 과정을 확인하고 있습니다.  
+1. [13] LSJ: 
 
 
 2. [16] LHY:  

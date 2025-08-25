@@ -1,9 +1,31 @@
-
-.env
+ex.js
 
 /src/generated/prisma
 .DS_Store
 /http
+
+# 수정된 부분
+/src/middilewares
+scj.js
+/src/routers/comment-router.js
+/src/routers/image-router.js
+/src/routers/tag-router.js
+/src/routers/style-router.js
+/src/routers/ranking-router.js
+/src/routers/style-router-sub.js
+
+/src/controllers/ranking-controller.js
+/src/services/ranking-service.js
+/src/services/style-service.js
+
+/src/validators/curating-validator.js
+/src/middlewares/validator-middleware.js
+/src/uploads
+uploads
+
+/prisma/seed.js
+
+/src/ex.js
 
 # 의존성 디렉토리
 node_modules/

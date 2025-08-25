@@ -4,9 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node -r dotenv/config src/app.js",
+    "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-    "db:seed": "node prisma/seed.js"
+    "seed": "node prisma/seed.js"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
@@ -20,10 +20,12 @@
     "prisma": "^6.14.0"
   },
   "dependencies": {
-    "@prisma/client": "^6.14.0",
+    "@prisma/client": "^6.13.0",
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
+    "morgan": "^1.10.1",
     "multer": "^2.0.2",
     "superstruct": "^2.0.2",
     "uuid": "^11.1.0",
