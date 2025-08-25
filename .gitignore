@@ -4,24 +4,6 @@ ex.js
 .DS_Store
 /http
 
-# 수정된 부분
-/src/middilewares
-scj.js
-/src/routers/comment-router.js
-/src/routers/image-router.js
-/src/routers/tag-router.js
-/src/routers/style-router.js
-/src/routers/ranking-router.js
-/src/routers/style-router-sub.js
-
-/src/controllers/ranking-controller.js
-/src/services/ranking-service.js
-/src/services/style-service.js
-
-/src/validators/curating-validator.js
-/src/middlewares/validator-middleware.js
-/src/uploads
-uploads
 
 /prisma/seed.js
 
@@ -66,12 +48,4 @@ docs/
 # 기타
 npm-shrinkwrap.json
 
-# 추가
-seed.js
-uploads/
-curation-router.js
-image-router.js
-ranking-router.js
-style-router.js
-tag-router.js
-ranking-controller.js
+

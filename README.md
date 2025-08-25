@@ -10,10 +10,7 @@
 
 ## Member Notes
 
-1. [13] LSJ: 
 
-
-2. [16] LHY:  
 
 
 3. [19] KHY:  

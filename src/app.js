@@ -2,6 +2,17 @@ import express from "express";
 import prisma from './client/prisma-client.js';
 import cors from "cors";
 import "dotenv/config";
+import path from "path";
+
+import prisma from './client/prisma-client.js';
+import styleRouter from "./routers/style-router.js";
+import rankingRouter from "./routers/ranking-router.js";
+import curationRouter from "./routers/curation-router.js";
+import commentRouter from "./routers/comment-router.js";
+import tagRouter from "./routers/tag-router.js";
+import imageRouter from "./routers/image-router.js";
+
+import errorHandler from './middlewares/error-handler.js';
 
 //lsj 지우지마세요 큰일나요
 //import { ErrorHandler } from "./lib/error-handler.js";
@@ -23,6 +34,7 @@ import { fileURLToPath } from "url";
 
 const app = express();
 const port = process.env.PORT || 3001;
+
 
 /* 1) 코어 미들웨어는 라우터보다 먼저 */
 app.use(cors({ origin: "*" }));
@@ -47,10 +59,23 @@ app.use(errorHandler);
 
 
 
-app.get("/", (req, res) => {
-  res.send("서버 정상");
-});
+// 2. 정적 파일 미들웨어 (가장 위에 위치해야 함)
+// 환경 변수 STATIC_FILE_PATH가 있다면 그 값을 사용하고, 없다면 '/files'를 기본값으로 사용합니다.
+app.use(process.env.STATIC_FILE_PATH || '/files', express.static(path.join(process.cwd(), 'uploads')));
 
+// 3. 라우터 연결
+app.use("/", styleRouter);
+app.use("/", rankingRouter);
+app.use("/", curationRouter);
+app.use("/", commentRouter);
+app.use("/", tagRouter);
+app.use("/", imageRouter);
+
+// 4. 루트 경로 응답
+app.get("/", (req, res) => {
+
+    res.send("프로젝트 백엔드 서버 정상");
+});
 
 /* 4) 404 (항상 마지막 일반 라우트) */
 
