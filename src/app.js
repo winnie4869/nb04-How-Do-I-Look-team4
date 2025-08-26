@@ -3,15 +3,15 @@ import prisma from "./client/prisma-client.js";
 import cors from "cors";
 import "dotenv/config";
 import curationRouter from './routers/curating-router.js';
-import { errorHandler } from "./middlewares/errorHandler.js";
+import { errorHandler } from "./middlewares/errorHandler-middleware.js";
 import path from "path"; 
 import { fileURLToPath } from "url"; 
 
-// import styleRouter from "./routers/style-router.js";
-// import rankingRouter from "./routers/ranking-router.js";
-// import commentRouter from "./routers/comment-router.js";
-// import tagRouter from "./routers/tag-router.js";
-// import imageRouter from "./routers/image-router.js";
+import styleRouter from "./routers/style-router.js";
+import rankingRouter from "./routers/ranking-router.js";
+import commentRouter from "./routers/comment-router.js";
+import tagRouter from "./routers/tag-router.js";
+import imageRouter from "./routers/image-router.js";
 
 
 const app = express();
@@ -29,19 +29,17 @@ app.use(cors({
 app.use(process.env.STATIC_FILE_PATH || '/files', express.static(path.join(__dirname, 'uploads')));
 
 app.use("/", curationRouter); 
-// app.use("/", styleRouter);
-// app.use("/", rankingRouter);
-// app.use("/", commentRouter);
-// app.use("/", tagRouter);
-// app.use("/", imageRouter);
+app.use("/", styleRouter);
+app.use("/", rankingRouter);
+app.use("/", commentRouter);
+app.use("/", tagRouter);
+app.use("/", imageRouter);
 app.use(errorHandler);
 
 
 app.get("/", (req, res) => {
     res.send("서버 정상");
 });
-
-// app.use("/", styleRouter);
 
 // 랭킹 라우터 연결 (기본 경로가 /ranking)
 // app.use('/ranking', rankingRouter);
@@ -51,15 +49,6 @@ app.get("/", (req, res) => {
 app.all(/(.*)/, (req, res) => {
     res.status(404).send({ message: '요청하신 리소스를 찾을 수 없습니다.' });
 });
-
-
-// // 애플리케이션 종료 시 Prisma 클라이언트 연결 해제
-// process.on('beforeExit', async () => {
-//   console.log('Server is shutting down. Disconnecting from database...');
-//   await prisma.$disconnect();
-// });
-
-// app.use(errorHandler);
 
 
 // 애플리케이션 종료 시 Prisma 클라이언트 연결 해제
@@ -73,14 +62,14 @@ app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
-// async function testDB() {
-//   try {
-//     await prisma.$connect();
-//     console.log("✅ DB 연결 성공!");
-//   } catch (err) {
-//     console.error("❌ DB 연결 실패:", err);
-//   }
-// }
-// testDB();
+async function testDB() {
+  try {
+    await prisma.$connect();
+    console.log("✅ DB 연결 성공!");
+  } catch (err) {
+    console.error("❌ DB 연결 실패:", err);
+  }
+}
+testDB();
 
 export default app;
