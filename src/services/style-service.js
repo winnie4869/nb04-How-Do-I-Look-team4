@@ -8,14 +8,10 @@ import { styleSchema, passwordSchema, styleIdSchema } from '../validators/style-
  */
 export const createStyleService = async (styleData) => {
   try {
-    // Zod를 사용하여 요청 본문 유효성 검사
     const { nickname, title, content, password, categories, tags, imageUrls } = styleSchema.parse(styleData);
 
     const newStyle = await prisma.$transaction(async (tx) => {
-      // Ensure tags is an array
       const validTags = Array.isArray(tags) ? tags : [];
-
-      // Upsert tags to ensure they exist
       const tagRecords = await Promise.all(
         validTags.map(tagName =>
           tx.tag.upsert({
@@ -26,7 +22,6 @@ export const createStyleService = async (styleData) => {
         )
       );
 
-      // Create the new style entry
       const style = await tx.style.create({
         data: {
           nickname,
@@ -50,7 +45,6 @@ export const createStyleService = async (styleData) => {
         },
       });
 
-      // Link style with tags
       await tx.styleTag.createMany({
         data: tagRecords.map(tag => ({
           styleId: style.id,
@@ -58,7 +52,6 @@ export const createStyleService = async (styleData) => {
         })),
       });
 
-      // Fetch the created style with its relations for the final response
       const createdStyleWithRelations = await tx.style.findUnique({
         where: { id: style.id },
         include: {
@@ -72,7 +65,6 @@ export const createStyleService = async (styleData) => {
         },
       });
 
-      // Format the response data
       const formattedCategories = createdStyleWithRelations.categories.reduce((acc, cat) => {
         acc[cat.key] = {
           name: cat.name,
@@ -102,24 +94,12 @@ export const createStyleService = async (styleData) => {
     return newStyle;
   } catch (error) {
     if (error instanceof ZodError) {
-      // ZodError를 re-throw하여 전역 에러 핸들러에서 처리
       throw error;
     }
-    // 기타 에러는 그대로 전파
     throw error;
   }
 };
 
-/**
- * 스타일 목록을 조회하는 서비스 함수
- * @param {string} page - 페이지 번호
- * @param {string} pageSize - 페이지 크기
- * @param {string} sortBy - 정렬 기준
- * @param {string} searchBy - 검색 기준
- * @param {string} keyword - 검색 키워드
- * @param {string} tag - 태그
- * @returns {Promise<object>} 스타일 목록 데이터
- */
 export const getStylesService = async (page, pageSize, sortBy, searchBy, keyword, tag) => {
   const currentPage = parseInt(page, 10) || 1;
   const itemsPerPage = parseInt(pageSize, 10) || 10;
@@ -130,7 +110,6 @@ export const getStylesService = async (page, pageSize, sortBy, searchBy, keyword
     throw error;
   }
 
-  // Dynamic WHERE condition generation
   const whereCondition = {};
   
   if (tag) {
@@ -230,17 +209,10 @@ export const getStylesService = async (page, pageSize, sortBy, searchBy, keyword
   };
 };
 
-/**
- * 특정 스타일 게시글의 상세 정보를 조회하는 서비스 함수
- * @param {string} styleId - 스타일 ID
- * @returns {Promise<object>} 스타일 상세 정보
- */
 export const getStyleByIdService = async (styleId) => {
-  // URL parameter validation
   const { styleId: parsedId } = styleIdSchema.parse({ styleId });
 
   const style = await prisma.$transaction(async (tx) => {
-    // Increment view count
     await tx.style.update({
       where: { id: parsedId },
       data: {
@@ -250,7 +222,6 @@ export const getStyleByIdService = async (styleId) => {
       },
     });
     
-    // Fetch detailed style information
     const styleDetails = await tx.style.findUnique({
       where: { id: parsedId },
       include: {
@@ -299,16 +270,8 @@ export const getStyleByIdService = async (styleId) => {
   };
 };
 
-/**
- * 특정 스타일 게시글을 수정하는 서비스 함수
- * @param {string} styleId - 스타일 ID
- * @param {object} updateData - 수정할 데이터
- * @returns {Promise<object>} 수정된 스타일 데이터
- */
 export const updateStyleService = async (styleId, updateData) => {
-  // URL parameter validation
   const { styleId: parsedId } = styleIdSchema.parse({ styleId });
-  // Request body validation
   const { nickname, title, content, password, categories, tags, imageUrls } = styleSchema.parse(updateData);
   
   const existingStyle = await prisma.style.findUnique({
@@ -411,16 +374,8 @@ export const updateStyleService = async (styleId, updateData) => {
   return updatedStyle;
 };
 
-/**
- * 특정 스타일 게시글을 삭제하는 서비스 함수
- * @param {string} styleId - 스타일 ID
- * @param {string} password - 비밀번호
- * @returns {Promise<string>} 성공 메시지
- */
 export const deleteStyleService = async (styleId, password) => {
-  // URL parameter validation
   const { styleId: parsedId } = styleIdSchema.parse({ styleId });
-  // Request body password validation
   const { password: parsedPassword } = passwordSchema.parse({ password });
 
   const existingStyle = await prisma.style.findUnique({

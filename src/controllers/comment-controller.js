@@ -72,7 +72,7 @@ export async function createComment(req, res, next) {
       select: { id: true, nickname: true, content: true, createdAt: true },
     });
 
-    res.status(201).json({created,nickname: cur?.style?.nickname ?? null});
+    res.status(201).json({created,nickname: curation?.style?.nickname ?? null});
   } catch (err) {
     next(err);
   }
