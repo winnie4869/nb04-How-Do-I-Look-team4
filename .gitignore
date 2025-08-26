@@ -48,5 +48,17 @@ uploads/
 
 # 기타
 npm-shrinkwrap.json
+
 src/uploads
 uploads/
+
+# 폴더 전체 무시
+src/routers/*
+src/controllers/*
+src/services/*
+src/validators/*
+src/middlewares/*
+
+# 특정 파일은 예외 처리
+!src/routers/image-router.js
+!src/routers/tag-router.js

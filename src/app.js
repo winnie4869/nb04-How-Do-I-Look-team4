@@ -26,9 +26,12 @@ const port = process.env.PORT || 3001;
 app.use(cors({ origin: "*" }));
 app.use(express.json());
 
+// ------------------------------
 // 2. 정적 파일 미들웨어 (가장 위에 위치해야 함)
+// 환경 변수 STATIC_FILE_PATH가 있다면 그 값을 사용하고, 없다면 '/files'를 기본값으로 사용합니다.
+app.use(process.env.STATIC_FILE_PATH || '/files', express.static('./src/uploads'));
 
-
+// ------------------------------
 // 3. 라우터 연결
 app.use("/", styleRouter);
 app.use("/", rankingRouter);
@@ -37,7 +40,14 @@ app.use("/", commentRouter);
 app.use("/", tagRouter);
 app.use("/", imageRouter);
 
-// 4. 404
+// ------------------------------
+// 4. 루트 경로 응답
+app.get("/", (req, res) => {
+    res.send("서버 정상");
+});
+
+// ------------------------------
+// 5. 404 Not Found 핸들러
 app.all(/(.*)/, (req, res) => {
   res.status(404).send({ message: "요청하신 리소스를 찾을 수 없습니다." });
 });
