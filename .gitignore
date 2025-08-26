@@ -53,6 +53,4 @@ src/middlewares/*
 
 # 특정 파일은 예외 처리
 !src/routers/image-router.js
-# !src/controllers/ran-controller.js
-# !src/services/ranking-service.js
 !src/routers/tag-router.js
