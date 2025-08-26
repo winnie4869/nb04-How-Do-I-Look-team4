@@ -1,9 +1,13 @@
-
-.env
+ex.js
 
 /src/generated/prisma
 .DS_Store
 /http
+
+
+/prisma/seed.js
+
+/src/ex.js
 
 # 의존성 디렉토리
 node_modules/
@@ -20,12 +24,15 @@ yarn-error.log*
 *.bak
 *.swp # Vim 스왑 파일
 
+*.http
+
 # 환경 설정 파일 (보안 또는 로컬 설정)
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+.env.sample
 
 # 빌드 관련 파일 (Webpack, Babel 등)
 dist/
@@ -43,17 +50,3 @@ uploads/
 npm-shrinkwrap.json
 src/uploads
 uploads/
-
-# 폴더 전체 무시
-src/routers/*
-src/controllers/*
-src/services/*
-src/validators/*
-src/middlewares/*
-
-# 특정 파일은 예외 처리
-!src/routers/ranking-router.js
-!src/controllers/ranking-controller.js
-!src/services/ranking-service.js
-
-
