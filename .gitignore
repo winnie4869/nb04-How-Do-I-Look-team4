@@ -44,8 +44,9 @@ coverage/
 
 # 문서 폴더 (Docs)
 docs/
+uploads/
 
 # 기타
 npm-shrinkwrap.json
-
-
+src/uploads
+uploads/
