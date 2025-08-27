@@ -12,4 +12,3 @@ export class NotFound extends HttpError {
 }
 
 export default { HttpError, BadRequest, Forbidden, NotFound };
-
