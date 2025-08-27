@@ -22,15 +22,18 @@ export class CurationService {
                 });
                 await tx.style.update({
                     where: { id: data.styleId },
-                    data: { curationCount: { increment: 1 } },
+                    data: {
+                        curationCount: {
+                            increment: 1,
+                        },
+                    },
                 });
 
                 return createdCuration;
             });
-
             return newCuration;
         } catch (error) {
-            const err = new Error("잘못된 요청입니다.");
+            const err = new Error("잘못된 요청입니다");
             err.status = 400;
             throw err;
         }
@@ -69,7 +72,7 @@ export class CurationService {
                 data: curations,
             };
         } catch (error) {
-            const err = new Error("잘못된 요청입니다.");
+            const err = new Error("잘못된 요청입니다");
             err.status = 400;
             throw err;
         }
@@ -118,27 +121,32 @@ export class CurationService {
                 err.status = 400;
                 throw err;
             }
+const existingCuration = await prisma.curation.findUnique({
+            where: { id: curationId }
+        });
+        if (!existingCuration) {
+            const err = new Error("존재하지 않습니다");
+            err.status = 404;
+            throw err;
+        }
+        const passwordMatch = await bcrypt.compare(password, existingCuration.password);
+        if (!passwordMatch) {
+            const err = new Error("비밀번호가 틀렸습니다");
+            err.status = 403;
+            throw err;
+        }
 
-            const existingCuration = await prisma.curation.findUnique({ where: { id: curationId } });
-            if (!existingCuration) {
-                const err = new Error("존재하지 않습니다");
-                err.status = 404;
-                throw err;
-            }
-
-            const passwordMatch = await bcrypt.compare(password, existingCuration.password);
-            if (!passwordMatch) {
-                const err = new Error("비밀번호가 틀렸습니다");
-                err.status = 403;
-                throw err;
-            }
-
-            await prisma.$transaction(async (tx) => {
-                await tx.curation.delete({ where: { id: curationId } });
-                await tx.style.update({
-                    where: { id: existingCuration.styleId },
-                    data: { curationCount: { decrement: 1 } },
-                });
+        await prisma.$transaction(async (tx) => {
+            await tx.curation.delete({
+                where: { id: curationId }
+            });
+            await tx.style.update({
+                where: { id: existingCuration.styleId },
+                data: {
+                    curationCount: {
+                        decrement: 1,
+                    },
+                },
             });
 
             return { message: "큐레이팅 삭제 성공" };
