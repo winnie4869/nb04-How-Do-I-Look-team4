@@ -1,11 +1,6 @@
 import prisma from '../client/prisma-client.js';
 import { styleSchema, passwordSchema, styleIdSchema } from '../validators/style-validator.js';
 
-/**
- * 새로운 스타일 게시글을 생성하는 서비스 함수
- * @param {object} styleData - 요청 본문 데이터
- * @returns {Promise<object>} 생성된 스타일 데이터
- */
 export const createStyleService = async (styleData) => {
   try {
     const { nickname, title, content, password, categories, tags, imageUrls } = styleSchema.parse(styleData);

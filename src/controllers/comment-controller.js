@@ -1,11 +1,9 @@
-// src/controllers/comment-controller.js
 import prisma from "../client/prisma-client.js";
-import * as Errors from "../lib/errors.js";
+import * as Errors from "../middlewares/errors.js";
 
 const BadRequest = Errors.BadRequest || Errors.default?.BadRequest;
 const Forbidden  = Errors.Forbidden  || Errors.default?.Forbidden;
 const NotFound   = Errors.NotFound   || Errors.default?.NotFound;
-
 
 // 비밀번호 대조 part 
 async function CommentPasswordCheck(curationId, password) {
