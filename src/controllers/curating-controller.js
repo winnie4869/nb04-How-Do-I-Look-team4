@@ -17,15 +17,13 @@ export class CurationController {
         searchBy,
         keyword
       );
-
       res.status(200).json({
         status: 200,
         message: "큐레이션 조회 성공",
-        data: results.data || {
-          currentPage: parseInt(page) || 1,
-          totalPages: 0,
-          totalItemCount: 0,
-        }
+        data: results.data, 
+          currentPage: results.currentPage,
+          totalPages: results.totalPages,   
+          totalItemCount: results.totalItemCount,
       });
     } catch (error) {
       next(error);
@@ -34,12 +32,12 @@ export class CurationController {
 
   postCurations = async (req, res, next) => {
     try {
-      const {styleId} = req.params;
+      const { styleId } = req.params;
       const { nickname, content, password, ...rating } = req.body;
-      
+
       if (!styleId || !nickname || !content || !password) {
         return res.status(400).json({ message: "필수 입력사항이 누락되었습니다." });
-      } 
+      }
       const newCuration = await this.curationService.postCuration({
         styleId: parseInt(styleId, 10),
         nickname,
