@@ -28,7 +28,10 @@ router.get('/tags', async (req, res) => {
       count: tag._count.tagId,
     }));
 
-    res.status(200).json({ tags: tagResults });
+    // 👉 문자열 배열만 응답하도록 수정
+    const tagNames = tagResults.map(tag => tag.name);
+
+    res.status(200).json({ tags: tagNames });
   } catch (error) {
     console.error('인기 태그 조회 중 오류:', error);
     res.status(500).json({ error: '서버 오류가 발생했습니다.' });
