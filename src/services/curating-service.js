@@ -4,33 +4,39 @@ import bcrypt from 'bcrypt';
 export class CurationService {
 
     async postCuration(data) {
-        const hashedPassword = await bcrypt.hash(data.password, 10);
-        
-        const newCuration = await prisma.$transaction(async (tx) => {
-            const createdCuration = await tx.curation.create({
-                data: {
-                    styleId: data.styleId,
-                    nickname: data.nickname,
-                    content: data.content,
-                    password: hashedPassword,
-                    trendy: data.trendy,
-                    personality: data.personality,
-                    practicality: data.practicality,
-                    costEffectiveness: data.costEffectiveness,
-                },
-            });
-            await tx.style.update({
-                where: { id: data.styleId },
-                data: {
-                    curationCount: {
-                        increment: 1,
-                    },
-                },
-            });
+        try {
+            const hashedPassword = await bcrypt.hash(data.password, 10);
 
-            return createdCuration;
-        });
-        return newCuration;
+            const newCuration = await prisma.$transaction(async (tx) => {
+                const createdCuration = await tx.curation.create({
+                    data: {
+                        styleId: data.styleId,
+                        nickname: data.nickname,
+                        content: data.content,
+                        password: hashedPassword,
+                        trendy: data.trendy,
+                        personality: data.personality,
+                        practicality: data.practicality,
+                        costEffectiveness: data.costEffectiveness,
+                    },
+                });
+                await tx.style.update({
+                    where: { id: data.styleId },
+                    data: {
+                        curationCount: {
+                            increment: 1,
+                        },
+                    },
+                });
+
+                return createdCuration;
+            });
+            return newCuration;
+        } catch (error) {
+            const err = new Error("잘못된 요청입니다");
+            err.status = 400;
+            throw err;
+        }
     }
 
     async getCurations(styleId, page, pageSize, searchBy, keyword) {
@@ -76,9 +82,8 @@ export class CurationService {
                 data: curations,
             };
         } catch (error) {
-            console.log("Error fetching curations:", error);
             const err = new Error("잘못된 요청입니다");
-            err.status = 500;
+            err.status = 400;
             throw err;
         }
     }
@@ -137,7 +142,7 @@ export class CurationService {
             err.status = 403;
             throw err;
         }
-        
+
         await prisma.$transaction(async (tx) => {
             await tx.curation.delete({
                 where: { id: curationId }
