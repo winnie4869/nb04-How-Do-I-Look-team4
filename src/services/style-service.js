@@ -24,11 +24,9 @@ export const createStyleService = async (styleData) => {
           content,
           password,
           thumbnail: imageUrls[0],
-          
           images: {
             create: imageUrls.map(url => ({ url })),
           },
-          
           categories: {
             create: Object.entries(categories).map(([key, cat]) => ({
               key,

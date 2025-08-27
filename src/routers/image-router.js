@@ -47,7 +47,6 @@ const upload = multer({ storage, fileFilter });
 
 // 이미지 업로드 라우트
 router.post('/images', upload.single('image'), (req, res) => {
-  console.log ('경로 진입');
   try {
     if (!req.file) {
       return res.status(400).json({ error: '이미지 파일이 필요합니다.' });
@@ -55,7 +54,6 @@ router.post('/images', upload.single('image'), (req, res) => {
 
     // 서버 주소 기반 URL 생성
     const imageUrl = `${req.protocol}://${req.get('host')}/files/${req.file.filename}`;
-    console.log ('업로드 성공:', imageUrl);
     res.status(201).json({ imageUrl });
   } catch (error) {
     console.error('이미지 업로드 오류:', error.message);
