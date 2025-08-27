@@ -69,7 +69,7 @@ async function shutdown() {
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
 
-server.on('close', () => console.log('[server] close'));
-server.on('listening', () => console.log('[server] listening event'));
-server.on('error', (e) => console.log('[server] error', e));
+// server.on('close', () => console.log('[server] close'));
+// server.on('listening', () => console.log('[server] listening event'));
+// server.on('error', (e) => console.log('[server] error', e));
 
