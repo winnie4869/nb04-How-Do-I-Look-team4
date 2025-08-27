@@ -55,7 +55,9 @@ app.all(/(.*)/, (req, res) => {
 // 5. 전역 에러 핸들러 미들웨어 등록 (모든 라우터와 404 핸들러 뒤에 위치해야 함)
 app.use(errorHandler);
 
-app.listen(port, () => {
+// ------------------------------
+// ✅ 서버 실행 (server 객체 저장해야 종료 시 close 가능)
+const server = app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
@@ -68,8 +70,4 @@ async function shutdown() {
 
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
-
-server.on('close', () => console.log('[server] close'));
-server.on('listening', () => console.log('[server] listening event'));
-server.on('error', (e) => console.log('[server] error', e));
 
