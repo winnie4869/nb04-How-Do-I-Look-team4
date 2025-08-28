@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/tags', async (req, res) => {
   try {
-    const limit = parseInt(req.query.limit, 10) || 5;
+    const limit = parseInt(req.query.limit, 10) || 7;
 
     const popularTags = await prisma.styleTag.groupBy({
       by: ['tagId'],
