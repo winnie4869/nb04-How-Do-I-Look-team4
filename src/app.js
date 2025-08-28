@@ -20,6 +20,10 @@ app.use(express.json());
 
 app.use(process.env.STATIC_FILE_PATH || '/files', express.static('./uploads'));
 
+app.get("/", (req, res) => {
+    res.send("환영합니다! 백엔드 서버가 정상적으로 작동 중입니다.");
+});
+
 app.use("/", styleRouter);
 app.use("/", rankingRouter);
 app.use("/", curationRouter);
