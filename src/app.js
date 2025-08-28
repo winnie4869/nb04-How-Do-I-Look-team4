@@ -2,32 +2,50 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 
-const app = express();
-const port = process.env.PORT || 3000;
+import prisma from './client/prisma-client.js';
+import styleRouter from "./routers/style-router.js";
+import rankingRouter from "./routers/ranking-router.js";
+import curationRouter from './routers/curating-router.js';
+import commentRouter from "./routers/comment-router.js";
+import tagRouter from "./routers/tag-router.js";
+import imageRouter from "./routers/image-router.js";
+import errorHandler from './middlewares/error-handler.js';
 
+const app = express();
+const port = process.env.PORT || 3001;
+
+app.set('trust proxy', true); 
+app.use(cors({ origin: "*" }));
 app.use(express.json());
-app.use(cors({
-    origin: "*"
-}));
+
+app.use(process.env.STATIC_FILE_PATH || '/files', express.static('./uploads'));
 
 app.get("/", (req, res) => {
-    res.send("서버 정상");
+    res.send("환영합니다! 백엔드 서버가 정상적으로 작동 중입니다.");
 });
 
-// 모든 라우터가 처리하지 못한 요청에 대한 404 Not Found 핸들러
-// 이 미들웨어는 항상 가장 마지막에 위치해야 합니다. (와일드카드 '*')
+app.use("/", styleRouter);
+app.use("/", rankingRouter);
+app.use("/", curationRouter);
+app.use("/", commentRouter);
+app.use("/", tagRouter);
+app.use("/", imageRouter);
+
 app.all(/(.*)/, (req, res) => {
-    res.status(404).send({ message: '요청하신 리소스를 찾을 수 없습니다.' });
+  res.status(404).send({ message: "요청하신 리소스를 찾을 수 없습니다." });
 });
 
-// 서버 실행
-app.listen(port, () => {
+app.use(errorHandler);
+
+const server = app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
-// 애플리케이션 종료 시 Prisma 클라이언트 연결 해제
-process.on('beforeExit', async () => {
-  console.log('Server is shutting down. Disconnecting from database...');
+async function shutdown() {
+  console.log("Server is shutting down. Disconnecting from database...");
   await prisma.$disconnect();
-});
+  server.close(() => process.exit(0));
+}
 
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
